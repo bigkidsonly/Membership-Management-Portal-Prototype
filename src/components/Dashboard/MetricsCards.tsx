@@ -54,7 +54,7 @@ export function MetricsCards() {
               </div>
             </div>}
           {metric.hasButton && <div className="mt-4">
-              <button className="w-full py-2 px-4 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 transition-colors">
+              <button className="w-full py-2 px-4 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:bg-secondary/90 transition-colors">
                 {metric.buttonText}
               </button>
             </div>}

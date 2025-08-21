@@ -56,7 +56,7 @@ export function ToolCard({
             {tool.discount}% OFF
           </span>
         </div>
-        <Link to={`/marketplace/tool/${tool.id}`} className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+        <Link to={`/marketplace/tool/${tool.id}`} className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none">
           View Details
           <ArrowRight className="ml-1 h-4 w-4" />
         </Link>

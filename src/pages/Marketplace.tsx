@@ -170,22 +170,22 @@ export function Marketplace() {
           Exclusive discounts for cooperative members
         </p>
       </div>
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 mb-8 text-white">
+      <div className="bg-gradient-to-r from-primary to-primary/80 rounded-xl p-6 mb-8 text-white">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div>
             <h2 className="text-2xl font-bold mb-2">
               Find the right tools for your organization
             </h2>
-            <p className="text-blue-100">
+            <p className="text-primary-foreground/80">
               Members saved $2.3M this year through cooperative purchasing power
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex space-x-3">
-            <Link to="/marketplace/orders" className="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium flex items-center">
+            <Link to="/marketplace/orders" className="bg-white text-primary px-4 py-2 rounded-lg font-medium flex items-center">
               <ShoppingCart className="h-4 w-4 mr-2" />
               My Orders
             </Link>
-            <Link to="/marketplace/orders?tab=approvals" className="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium flex items-center">
+            <Link to="/marketplace/orders?tab=approvals" className="bg-white text-primary px-4 py-2 rounded-lg font-medium flex items-center">
               <Clock className="h-4 w-4 mr-2" />
               Pending Approvals
             </Link>
