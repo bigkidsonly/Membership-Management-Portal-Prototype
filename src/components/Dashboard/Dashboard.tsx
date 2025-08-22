@@ -1,12 +1,13 @@
-import React from 'react';
-import { MetricsCards } from './MetricsCards';
-import { AffiliatePanel } from './AffiliatePanel';
-import { BenefitsPanel } from './BenefitsPanel';
-import { SupportPanel } from './SupportPanel';
-import { MarketplaceActivity } from './MarketplaceActivity';
-import { ProjectUpdates } from './ProjectUpdates';
+import React from "react";
+import { MetricsCards } from "./MetricsCards";
+import { AffiliatePanel } from "./AffiliatePanel";
+import { BenefitsPanel } from "./BenefitsPanel";
+import { SupportPanel } from "./SupportPanel";
+import { MarketplaceActivity } from "./MarketplaceActivity";
+import { ProjectUpdates } from "./ProjectUpdates";
 export function Dashboard() {
-  return <div className="max-w-7xl mx-auto">
+  return (
+    <div className="max-w-7xl mx-auto">
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
         Welcome back, Affiliated Networks
       </h1>
@@ -23,5 +24,6 @@ export function Dashboard() {
         <MarketplaceActivity />
         <ProjectUpdates />
       </div>
-    </div>;
+    </div>
+  );
 }
