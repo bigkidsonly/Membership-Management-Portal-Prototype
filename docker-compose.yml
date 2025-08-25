@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dev-ops/Dockerfile
+    volumes:
+      - .:/app
+    env_file:
+      - dev.env
+    ports:
+      - "5000:5000"
