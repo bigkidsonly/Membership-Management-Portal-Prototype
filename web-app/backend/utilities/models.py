@@ -36,12 +36,12 @@ class TMC_Organization(db.Model):
     slack_channel: Mapped[str] = mapped_column(String(255), nullable=True)
 
 
-class Data_Shares(db.Model):
+class Data_Sharing_Relationship(db.Model):
     """
     This maps data sharing agreements between organizations.
     """
 
-    __tablename__ = "data_shares"
+    __tablename__ = "data_sharing"
     __table_args__ = {"schema": "tmc_dev"}
 
     id: Mapped[int] = mapped_column(Integer(), primary_key=True)

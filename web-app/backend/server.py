@@ -9,7 +9,7 @@ db.init_app(api)
 
 ### Register routes
 
-from routes import core_bp, api_bp
+from routes import api_bp, core_bp
 
 api.register_blueprint(core_bp)
 api.register_blueprint(api_bp)
