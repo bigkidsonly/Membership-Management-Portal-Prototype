@@ -2,7 +2,7 @@ FROM python:3.12-bullseye
 
 WORKDIR /app
 
-COPY ./web-app/requirements.txt .
+COPY ./web-app/backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .

@@ -3,13 +3,7 @@ from typing import List
 
 from flask_security import RoleMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import (
-    Boolean,
-    DateTime,
-    ForeignKey,
-    Integer,
-    String,
-)
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 #####
@@ -33,10 +27,8 @@ class TMC_Organization(db.Model):
     )
     organization_type: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now(), onupdate=datetime.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, onupdate=func.now())
     deactivated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
     domain: Mapped[str] = mapped_column(String(255), nullable=True)
@@ -64,7 +56,7 @@ class Data_Shares(db.Model):
     )
     grant_national: Mapped[bool] = mapped_column(Boolean(), default=False)
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
     deactivated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 
