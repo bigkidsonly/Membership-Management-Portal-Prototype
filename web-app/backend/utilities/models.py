@@ -57,7 +57,10 @@ class Data_Shares(db.Model):
         Integer(), ForeignKey(TMC_Organization.id), nullable=False
     )
     receiving_data_owner_id: Mapped[int] = mapped_column(
-        Integer(), ForeignKey(TMC_Organization.id), nullable=False
+        Integer(), ForeignKey("tmc_dev.organization.id"), nullable=False
+    )
+    receiving_data_owner_id: Mapped[int] = mapped_column(
+        Integer(), ForeignKey("tmc_dev.organization.id"), nullable=False
     )
     grant_national: Mapped[bool] = mapped_column(Boolean(), default=False)
 
