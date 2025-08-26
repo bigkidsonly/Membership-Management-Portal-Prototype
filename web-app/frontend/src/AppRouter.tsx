@@ -12,6 +12,8 @@ import { ToolDetail } from "./pages/marketplace/ToolDetail";
 import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";
+import { UserProvider } from "./context/UserContext";
+
 export function AppRouter() {
   return (
     <BrowserRouter>
