@@ -8,7 +8,7 @@ import { Projects } from "./pages/Projects";
 import { Billing } from "./pages/Billing";
 import { Directory } from "./pages/Directory";
 import { Support } from "./pages/Support";
-import { ToolCard } from "./pages/marketplace/ToolCard";
+import { ToolDetail } from "./pages/marketplace/ToolDetail";
 import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";
@@ -20,7 +20,7 @@ export function AppRouter() {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="marketplace" element={<Marketplace />} />
-          <Route path="marketplace/tool/:id" element={<ToolCard />} />
+          <Route path="marketplace/tool/:id" element={<ToolDetail />} />
           <Route
             path="marketplace/purchase/:id"
             element={<PurchaseRequest />}
