@@ -1,15 +1,14 @@
 import os
-
 import sys
 
 sys.path.append(os.path.abspath(os.path.join("..", "web-app", "backend")))
 
-from logging.config import fileConfig
 import logging
+from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import create_engine, text
-from utilities.models import db
+from utilities.models.database import db
 
 ####
 
