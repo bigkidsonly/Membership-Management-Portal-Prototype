@@ -1,9 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 export function VendorDirectory() {
-  return <div className="max-w-7xl mx-auto">
-      <Link to="/marketplace" className="inline-flex items-center text-blue-600 mb-6 hover:text-blue-800">
+  return (
+    <div className="max-w-7xl mx-auto">
+      <Link
+        to="/marketplace"
+        className="inline-flex items-center text-blue-600 mb-6 hover:text-blue-800"
+      >
         <ArrowLeft className="h-4 w-4 mr-1" />
         Back to Marketplace
       </Link>
@@ -16,5 +19,6 @@ export function VendorDirectory() {
           available soon.
         </p>
       </div>
-    </div>;
+    </div>
+  );
 }

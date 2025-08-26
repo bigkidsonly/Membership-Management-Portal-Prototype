@@ -1,5 +1,5 @@
-import React from 'react'
-import { Affiliate } from '../../types/affiliate'
+import React from "react";
+import { Affiliate } from "../../types/affiliate";
 import {
   X,
   Edit,
@@ -10,13 +10,15 @@ import {
   MapPin,
   Calendar,
   Tag,
-} from 'lucide-react'
+} from "lucide-react";
+
 interface AffiliateDetailProps {
-  affiliate: Affiliate
-  onEdit: () => void
-  onDelete: () => void
-  onClose: () => void
+  affiliate: Affiliate;
+  onEdit: () => void;
+  onDelete: () => void;
+  onClose: () => void;
 }
+
 export function AffiliateDetail({
   affiliate,
   onEdit,
@@ -79,7 +81,7 @@ export function AffiliateDetail({
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      {affiliate.website.replace(/^https?:\/\//i, '')}
+                      {affiliate.website.replace(/^https?:\/\//i, "")}
                     </a>
                   </div>
                 )}
@@ -105,21 +107,21 @@ export function AffiliateDetail({
               <div className="mt-4 flex items-center">
                 <span className="mr-2 text-gray-700">Status:</span>
                 <span
-                  className={`px-2 py-1 text-xs rounded-full ${affiliate.status === 'active' ? 'bg-green-100 text-green-800' : affiliate.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}
+                  className={`px-2 py-1 text-xs rounded-full ${
+                    affiliate.status === "active"
+                      ? "bg-green-100 text-green-800"
+                      : affiliate.status === "pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-red-100 text-red-800"
+                  }`}
                 >
                   {affiliate.status.charAt(0).toUpperCase() +
                     affiliate.status.slice(1)}
                 </span>
               </div>
-              <div className="mt-2 flex items-center">
-                <span className="mr-2 text-gray-700">Tier:</span>
-                <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                  {affiliate.tier}
-                </span>
-              </div>
             </div>
           </div>
-          {affiliate.tags.length > 0 && (
+          {affiliate.tags && affiliate.tags.length > 0 && (
             <div className="mt-6">
               <h4 className="text-sm font-medium text-gray-700 mb-2">Tags</h4>
               <div className="flex flex-wrap gap-2">
@@ -161,5 +163,5 @@ export function AffiliateDetail({
         </div>
       </div>
     </div>
-  )
+  );
 }
