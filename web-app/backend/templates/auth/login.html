@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+<body>
+    {% block content %}
+    <div class="login-box">
+        <form action="/login-user" method="post">
+            <button type="submit" class="login-btn" style="text-decoration:none;">
+                <img id="google" src="https://media.licdn.com/dms/image/v2/D4E0BAQG3yDcJLVdnDQ/company-logo_200_200/B4EZU4oT7oGwAM-/0/1740411846733/themovementcooperative_logo?e=2147483647&v=beta&t=-ldjFMOlKqrD16qrqpe6YbH4wmKu7QHbyTAVgcL7ulY"
+                     alt="Google"
+                     style="width:50px;height:50px;">
+                <div class="btn-text">
+                    <b>Log In to View</b>
+                </div>
+            </button>
+        </form>
+    </div>
+    {% endblock %}
+</body>
