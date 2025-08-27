@@ -1,8 +1,9 @@
 from datetime import datetime
+from typing import List
 
 from flask_security import RoleMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, func
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 db = SQLAlchemy()
@@ -24,6 +25,8 @@ class TMC_Organization(db.Model):
     organization_type: Mapped[str] = mapped_column(String(100), nullable=False)
     organization_size: Mapped[str] = mapped_column(String(100), nullable=True)
     member_tier: Mapped[str] = mapped_column(String(100), nullable=True)
+    join_date: Mapped[Date] = mapped_column(Date, nullable=False)
+    location: Mapped[str] = mapped_column(String(100), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
@@ -34,6 +37,24 @@ class TMC_Organization(db.Model):
     domain: Mapped[str] = mapped_column(String(255), nullable=True)
     website: Mapped[str] = mapped_column(String(255), nullable=True)
     slack_channel: Mapped[str] = mapped_column(String(255), nullable=True)
+    logo: Mapped[str] = mapped_column(String(255), nullable=True)
+
+
+class Data_Sharing_Relationship(db.Model):
+    __tablename__ = "data_sharing"
+    __table_args__ = {"schema": "tmc_dev"}
+
+    id: Mapped[int] = mapped_column(Integer(), primary_key=True)
+    granting_data_owner_id: Mapped[int] = mapped_column(
+        Integer(), db.ForeignKey(TMC_Organization.data_owner_id), nullable=False
+    )
+    receiving_data_owner_id: Mapped[int] = mapped_column(
+        Integer(), db.ForeignKey(TMC_Organization.data_owner_id), nullable=False
+    )
+    description: Mapped[str] = mapped_column(String(255), nullable=True)
+    grant_national: Mapped[bool] = mapped_column(Boolean(), default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    deactivated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 
 ##### ACCESS CONTROLS
@@ -65,7 +86,43 @@ class User(db.Model, UserMixin):
         DateTime(), onupdate=func.now(), nullable=True
     )
     deactivated_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
-    # Relationship to roles will be set after all models are defined
+
+    @property
+    def accessible_organizations(self) -> List[int]:
+        """
+        This returns a list of organization IDs that the user has access to based
+        on active data sharing agreements.
+        """
+
+        # TODO - there's gotta be a more efficient way to do this
+        # Start with the organization the user is assigned
+        organizations = [self.organization_id]
+        user_org = (
+            db.session.query(TMC_Organization)
+            .filter_by(id=self.organization_id)
+            .first()
+        )
+
+        # These are orgs that are sharing "up" to the user's org
+        shared_data_owner_ids = (
+            db.session.query(Data_Sharing_Relationship)
+            .filter(
+                Data_Sharing_Relationship.receiving_data_owner_id
+                == user_org.data_owner_id,
+                Data_Sharing_Relationship.deactivated_at.is_(None),
+            )
+            .all()
+        )
+
+        # Write these back to the organizations array
+        shared_orgs = (
+            db.session.query(TMC_Organization)
+            .filter(TMC_Organization.data_owner_id.in_(shared_data_owner_ids))
+            .all()
+        )
+        organizations.extend([org.id for org in shared_orgs])
+
+        return organizations
 
 
 class User_Roles(db.Model):
@@ -78,23 +135,6 @@ class User_Roles(db.Model):
 
 
 ##### HAVEN TABLES
-
-
-class Data_Sharing_Relationship(db.Model):
-    __tablename__ = "data_sharing"
-    __table_args__ = {"schema": "tmc_dev"}
-
-    id: Mapped[int] = mapped_column(Integer(), primary_key=True)
-    granting_data_owner_id: Mapped[int] = mapped_column(
-        Integer(), db.ForeignKey(TMC_Organization.data_owner_id), nullable=False
-    )
-    receiving_data_owner_id: Mapped[int] = mapped_column(
-        Integer(), db.ForeignKey(TMC_Organization.data_owner_id), nullable=False
-    )
-    description: Mapped[str] = mapped_column(String(255), nullable=True)
-    grant_national: Mapped[bool] = mapped_column(Boolean(), default=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
-    deactivated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 
 class BigQuery_User(db.Model):
@@ -297,3 +337,8 @@ class OrderItems(db.Model):
     unit_price: Mapped[Float] = mapped_column(Float(), nullable=False)
     total_price: Mapped[Float] = mapped_column(Float(), nullable=False)
     subscription_length: Mapped[Integer] = mapped_column(Integer(), nullable=False)
+
+
+###
+
+User.roles = relationship("Role", secondary=User_Roles, back_populates="users")
