@@ -14,6 +14,9 @@ import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";
 import { UserManagement } from "./pages/UserManagement";
+import { Profile } from "./pages/Profile";
+import { Settings } from "./pages/Settings";
+
 export function AppRouter() {
   return (
     <BrowserRouter>
@@ -39,6 +42,8 @@ export function AppRouter() {
           <Route path="directory" element={<Directory />} />
           <Route path="support" element={<Support />} />
           <Route path="user-management" element={<UserManagement />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
