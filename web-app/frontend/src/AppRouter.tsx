@@ -9,10 +9,13 @@ import { Billing } from "./pages/Billing";
 import { Directory } from "./pages/Directory";
 import { Support } from "./pages/Support";
 import { ToolDetail } from "./pages/marketplace/ToolDetail";
+import { ThruTalkDetail } from "././pages/marketplace/ThruTalkDetail";
 import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";
-import { UserProvider } from "./context/UserContext";
+import { UserManagement } from "./pages/UserManagement";
+import { Profile } from "./pages/Profile";
+import { Settings } from "./pages/Settings";
 
 export function AppRouter() {
   return (
@@ -24,6 +27,10 @@ export function AppRouter() {
           <Route path="marketplace" element={<Marketplace />} />
           <Route path="marketplace/tool/:id" element={<ToolDetail />} />
           <Route
+            path="marketplace/tool/thrutalk"
+            element={<ThruTalkDetail />}
+          />
+          <Route
             path="marketplace/purchase/:id"
             element={<PurchaseRequest />}
           />
@@ -34,6 +41,9 @@ export function AppRouter() {
           <Route path="billing" element={<Billing />} />
           <Route path="directory" element={<Directory />} />
           <Route path="support" element={<Support />} />
+          <Route path="user-management" element={<UserManagement />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
