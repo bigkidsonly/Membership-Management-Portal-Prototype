@@ -5,7 +5,6 @@ import { AffiliatePanel } from "../components/Dashboard/AffiliatePanel";
 import { BenefitsPanel } from "../components/Dashboard/BenefitsPanel";
 import { SupportPanel } from "../components/Dashboard/SupportPanel";
 import { MarketplaceActivity } from "../components/Dashboard/MarketplaceActivity";
-import { ProjectUpdates } from "../components/Dashboard/ProjectUpdates";
 import { useDashboardMetrics, useAffiliates } from "../hooks/useSupabaseData";
 
 export function Dashboard() {
@@ -70,31 +69,17 @@ export function Dashboard() {
       <h2 className="text-sm text-gray-500 -mt-4 mb-6">
         TL-1 - Affiliated Networks Dashboard
       </h2>
-
       {/* Top Section - Key Metrics */}
-      <MetricsCards
-        affiliatesCount={metrics.affiliatesCount}
-        maxAffiliates={metrics.maxAffiliates}
-        activeProjects={metrics.activeProjects}
-        monthlyOrders={metrics.monthlyOrders}
-        pendingApprovals={metrics.pendingApprovals}
-        loading={metricsLoading}
-      />
-
+      <MetricsCards />
       {/* Three Column Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-        <AffiliatePanel
-          recentAffiliates={affiliates?.slice(0, 5) || []}
-          loading={affiliatesLoading}
-        />
+        <AffiliatePanel />
         <BenefitsPanel />
         <SupportPanel />
       </div>
-
       {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <MarketplaceActivity activities={[]} />
-        <ProjectUpdates />
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mt-6">
+        <MarketplaceActivity />
       </div>
     </div>
   );
