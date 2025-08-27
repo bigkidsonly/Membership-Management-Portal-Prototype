@@ -295,3 +295,27 @@ def get_all_affiliates():
     return jsonify(
         {"affiliates": [org.to_dict() for org in affiliates], "status_code": 200}
     )
+
+
+@bp.route("/organization/affiliates/<id>", methods=["GET"])
+def get_single_affiliate(id_: int):
+    """
+    Endpoint to get a single affiliate organization by ID.
+    """
+
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Unauthorized", "status_code": 401})
+
+    affiliate = (
+        db.session.query(TMC_Organization)
+        .filter(
+            TMC_Organization.id == id_,
+            TMC_Organization.id.in_(current_user.accessible_organizations),
+        )
+        .first()
+    )
+
+    if not affiliate:
+        return jsonify({"error": "Affiliate not found", "status_code": 404})
+
+    return jsonify({"affiliate": affiliate.to_dict(), "status_code": 200})
