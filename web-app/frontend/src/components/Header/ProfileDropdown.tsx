@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ChevronDown, LogOut, Settings, User } from "lucide-react";
+import { Link } from "react-router-dom";
 interface ProfileDropdownProps {
   className?: string;
 }
@@ -35,7 +36,6 @@ export function ProfileDropdown({ className = "" }: ProfileDropdownProps) {
             <div className="text-sm font-medium text-gray-700">
               Affiliated Networks
             </div>
-            <div className="text-xs text-gray-500">Member Organization</div>
           </div>
           <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
         </div>
@@ -43,20 +43,20 @@ export function ProfileDropdown({ className = "" }: ProfileDropdownProps) {
       {isOpen && (
         <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
-            <a
-              href="#profile"
+            <Link
+              to="/profile"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               <User className="mr-2 h-4 w-4" />
               Your Profile
-            </a>
-            <a
-              href="#settings"
+            </Link>
+            <Link
+              to="/settings"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               <Settings className="mr-2 h-4 w-4" />
               Settings
-            </a>
+            </Link>
             <a
               href="#signout"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
