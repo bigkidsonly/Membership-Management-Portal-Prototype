@@ -5,6 +5,8 @@ import { memberOrganizations } from "@/data/organization";
 import { affiliates } from "@/data/affiliatesOrganization";
 import { recentActivity } from "@/data/activityLog";
 import { benefits } from "@/data/benefitsUsage";
+import { tools } from "@/data/tools";
+import { marketplaceService } from "@/services/database";
 
 // Generic hook for data fetching with loading and error states
 export function useAsyncData<T>(
@@ -55,6 +57,10 @@ export function useActivityLog() {
 
 export function useBenefits() {
   return useAsyncData(async () => benefits);
+}
+
+export function useTools() {
+  return useAsyncData(async () => tools);
 }
 
 export function useMarketplaceTools(options?: {

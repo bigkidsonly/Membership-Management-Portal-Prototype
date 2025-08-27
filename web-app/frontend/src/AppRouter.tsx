@@ -9,7 +9,7 @@ import { Billing } from "./pages/Billing";
 import { Directory } from "./pages/Directory";
 import { Support } from "./pages/Support";
 import { ToolDetail } from "./pages/marketplace/ToolDetail";
-import { ThruTalkDetail } from "./pages/marketplace/ThruTalkDetail";
+import { ThruTalkDetail } from "././pages/marketplace/ThruTalkDetail";
 import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";

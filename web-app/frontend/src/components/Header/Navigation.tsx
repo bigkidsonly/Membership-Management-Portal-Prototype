@@ -27,11 +27,6 @@ export function Navigation({
       current: pathname.startsWith("/marketplace"),
     },
     {
-      name: "Projects",
-      href: "/projects",
-      current: pathname === "/projects",
-    },
-    {
       name: "User Management",
       href: "/user-management",
       current: pathname === "/user-management",

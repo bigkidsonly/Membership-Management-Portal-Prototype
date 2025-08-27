@@ -4,7 +4,10 @@ export const memberOrganizations: MemberOrganization[] = [
     id: "1",
     name: "Tech Justice Collective",
     tier: "TL-1",
+
+    //* Add these values to the Tags tablle*//
     movementFocus: ["Digital Rights", "Education", "Community Technology"],
+
     size: "10-50 employees",
     primaryContact: {
       name: "Maria Rodriguez",

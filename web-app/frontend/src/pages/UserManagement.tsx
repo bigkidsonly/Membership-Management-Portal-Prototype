@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { UserTable } from "../components/user-management/UserTable";
-import { ApplicationForm } from "../components/user-management/ApplicationForm";
+import { UserTable } from ".././components/user-management/UserTable";
+import { ApplicationForm } from ".././components/user-management/ApplicationForm";
 import { Search, Plus, Download, Filter, RefreshCw } from "lucide-react";
 export function UserManagement() {
   const [activeTab, setActiveTab] = useState("new-users");
