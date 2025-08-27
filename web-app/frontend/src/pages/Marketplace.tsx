@@ -14,6 +14,9 @@ import { FilterSidebar } from "../components/marketplace/FilterSidebar";
 import { ToolCard } from "../components/marketplace/ToolCard";
 import { FeaturedDeals } from "../components/marketplace/FeaturedDeals";
 import { Link } from "react-router-dom";
+import { useTools } from "@/hooks/useSupabaseData";
+import { Button } from "@/components/ui/button";
+
 export function Marketplace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -21,168 +24,21 @@ export function Marketplace() {
   const [categoryScrollPosition, setCategoryScrollPosition] = useState(0);
   const categoryScrollRef = useRef<HTMLDivElement>(null);
   // Sample data for marketplace tools
-  const tools = [
-    {
-      id: "1",
-      name: "Tableau",
-      category: "Data & Analytics",
-      vendor: "Salesforce",
-      description:
-        "Enterprise-grade data visualization and business intelligence platform with advanced analytics capabilities.",
-      regularPrice: 70,
-      memberPrice: 49,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.8,
-      reviewCount: 245,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Tableau_Logo.png",
-      featured: true,
-    },
-    {
-      id: "2",
-      name: "Asana",
-      category: "Project Management",
-      vendor: "Asana, Inc.",
-      description:
-        "Work management platform designed to help teams organize, track, and manage their work.",
-      regularPrice: 24.99,
-      memberPrice: 17.99,
-      discount: 28,
-      tier: "TL-2",
-      rating: 4.6,
-      reviewCount: 189,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Asana_logo.svg/1200px-Asana_logo.svg.png",
-      featured: false,
-    },
-    {
-      id: "3",
-      name: "Slack",
-      category: "Communication Tools",
-      vendor: "Salesforce",
-      description:
-        "Business communication platform offering many IRC-style features, including persistent chat rooms.",
-      regularPrice: 12.5,
-      memberPrice: 8.75,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.9,
-      reviewCount: 320,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/2560px-Slack_Technologies_Logo.svg.png",
-      featured: true,
-    },
-    {
-      id: "4",
-      name: "Airtable",
-      category: "Data & Analytics",
-      vendor: "Airtable, Inc.",
-      description:
-        "Cloud collaboration service that combines the features of a database with the visual interface of a spreadsheet.",
-      regularPrice: 20,
-      memberPrice: 14,
-      discount: 30,
-      tier: "TL-2",
-      rating: 4.7,
-      reviewCount: 156,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Airtable_Logo.svg/2560px-Airtable_Logo.svg.png",
-      featured: false,
-    },
-    {
-      id: "5",
-      name: "Notion",
-      category: "Project Management",
-      vendor: "Notion Labs",
-      description:
-        "All-in-one workspace for notes, tasks, wikis, and databases with customizable blocks.",
-      regularPrice: 8,
-      memberPrice: 5.6,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.8,
-      reviewCount: 210,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png",
-      featured: true,
-    },
-    {
-      id: "6",
-      name: "Figma",
-      category: "Design Tools",
-      vendor: "Figma, Inc.",
-      description:
-        "Cloud-based design tool that enables collaborative interface design with real-time editing.",
-      regularPrice: 15,
-      memberPrice: 10.5,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.9,
-      reviewCount: 278,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-      featured: false,
-    },
-    {
-      id: "7",
-      name: "Okta",
-      category: "Security",
-      vendor: "Okta, Inc.",
-      description:
-        "Identity and access management service that enables secure connections to applications and services.",
-      regularPrice: 29,
-      memberPrice: 20.3,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.7,
-      reviewCount: 142,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Okta_Logo.svg",
-      featured: false,
-    },
-    {
-      id: "8",
-      name: "Salesforce",
-      category: "CRM Systems",
-      vendor: "Salesforce",
-      description:
-        "Cloud-based customer relationship management platform for sales, service, marketing, and more.",
-      regularPrice: 150,
-      memberPrice: 105,
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.6,
-      reviewCount: 320,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Salesforce.com_logo.svg/2560px-Salesforce.com_logo.svg.png",
-      featured: true,
-    },
-    {
-      id: "9",
-      name: "Zoom",
-      category: "Communication Tools",
-      vendor: "Zoom Video Communications",
-      description:
-        "Video conferencing service with robust features for virtual meetings, webinars, and collaboration.",
-      regularPrice: 14.99,
-      memberPrice: 10.49,
-      discount: 30,
-      tier: "TL-2",
-      rating: 4.5,
-      reviewCount: 287,
-      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Zoom_Communications_Logo.svg/1280px-Zoom_Communications_Logo.svg.png",
-      featured: false,
-    },
-    {
-      id: "thrutalk",
-      name: "ThruTalk",
-      category: "Communication Tools",
-      vendor: "ThruText, Inc.",
-      description:
-        "Advanced phone service platform with SMS, MMS, voice calls, and message segmentation for organizations.",
-      regularPrice: "Variable",
-      memberPrice: "Pay per use",
-      discount: 30,
-      tier: "TL-1",
-      rating: 4.9,
-      reviewCount: 187,
-      logo: "https://via.placeholder.com/200x80/0066cc/ffffff?text=ThruTalk",
-      featured: true,
-    },
-  ];
+
+  const {
+    data: initialTools,
+    loading: toolsLoading,
+    error: toolsError,
+  } = useTools();
+
+  const [tools, setTools] = useState<Tools[]>((initialTools as Tool[]) || []);
+
+  useEffect(() => {
+    if (!toolsLoading && initialTools) {
+      setTools(initialTools as Tool[]);
+    }
+  }, [toolsLoading]);
+
   const featuredTools = tools.filter((tool) => tool.featured);
   // Categories with counts
   const categories = [
@@ -273,9 +129,6 @@ export function Marketplace() {
       <div className="bg-gradient-to-r from-primary to-primary/80 rounded-xl p-4 md:p-6 mb-6 md:mb-8 text-white">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="text-center md:text-left mb-4 md:mb-0">
-            <h2 className="text-xl md:text-2xl font-bold mb-2">
-              Find the right tools for your organization
-            </h2>
             <p className="text-primary-foreground/80 text-sm md:text-base">
               Members saved $2.3M this year through cooperative purchasing power
             </p>
@@ -490,12 +343,14 @@ export function Marketplace() {
           </div>
 
           <div className="flex justify-center border-t pt-6">
-            <Link
-              to="/marketplace/vendors"
-              className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800 group"
-            >
-              View all vendor partnerships
-              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-200" />
+            <Link to="/marketplace/vendors">
+              <Button
+                variant="link"
+                className="text-blue-600 hover:text-blue-800 group p-0"
+              >
+                View all vendor partnerships
+                <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-200" />
+              </Button>
             </Link>
           </div>
         </div>
