@@ -297,8 +297,8 @@ def get_all_affiliates():
     )
 
 
-@bp.route("/organization/affiliates/<id>", methods=["GET"])
-def get_single_affiliate(id_: int):
+@bp.route("/organization/affiliates/<affiliate_id>", methods=["GET"])
+def get_single_affiliate(affiliate_id: int):
     """
     Endpoint to get a single affiliate organization by ID.
     """
@@ -309,7 +309,7 @@ def get_single_affiliate(id_: int):
     affiliate = (
         db.session.query(TMC_Organization)
         .filter(
-            TMC_Organization.id == id_,
+            TMC_Organization.id == affiliate_id,
             TMC_Organization.id.in_(current_user.accessible_organizations),
         )
         .first()
