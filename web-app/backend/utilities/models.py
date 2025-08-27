@@ -341,4 +341,4 @@ class OrderItems(db.Model):
 
 ###
 
-User.roles = relationship("Role", secondary=User_Roles, back_populates="users")
+User.roles = relationship("Role", secondary="tmc_dev.user_roles", backref="users")

@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: dev-ops/Dockerfile
-    volumes:
-      - .:/app
     env_file:
       - dev.env
     ports:
