@@ -1,16 +1,17 @@
+import traceback
+from uuid import uuid4
+
 from flask import Blueprint, request
 from sqlalchemy import func
 from utilities.models import (
     Data_Owners,
+    Data_Sharing_Relationship,
     TMC_Organization,
     TMC_Organization_Contacts,
-    Data_Sharing_Relationship,
     User,
     db,
 )
 from utilities.tmc_logger import tmc_logger
-import traceback
-from uuid import uuid4
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
