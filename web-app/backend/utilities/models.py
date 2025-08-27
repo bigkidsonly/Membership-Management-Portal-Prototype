@@ -9,7 +9,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 db = SQLAlchemy()
 
 
-class TMC_Organization(db.Model):
+class TMC_Data_Model:
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class TMC_Organization(db.Model, TMC_Data_Model):
     __tablename__ = "organization"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -40,7 +45,7 @@ class TMC_Organization(db.Model):
     logo: Mapped[str] = mapped_column(String(255), nullable=True)
 
 
-class Data_Sharing_Relationship(db.Model):
+class Data_Sharing_Relationship(db.Model, TMC_Data_Model):
     __tablename__ = "data_sharing"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -60,7 +65,7 @@ class Data_Sharing_Relationship(db.Model):
 ##### ACCESS CONTROLS
 
 
-class Role(db.Model, RoleMixin):
+class Role(db.Model, TMC_Data_Model, RoleMixin):
     __tablename__ = "role"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -69,7 +74,7 @@ class Role(db.Model, RoleMixin):
     description: Mapped[str] = mapped_column(String(255))
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, TMC_Data_Model, UserMixin):
     __tablename__ = "user"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -117,7 +122,11 @@ class User(db.Model, UserMixin):
         # Write these back to the organizations array
         shared_orgs = (
             db.session.query(TMC_Organization)
-            .filter(TMC_Organization.data_owner_id.in_(shared_data_owner_ids))
+            .filter(
+                TMC_Organization.data_owner_id.in_(
+                    [x.granting_data_owner_id for x in shared_data_owner_ids]
+                )
+            )
             .all()
         )
         organizations.extend([org.id for org in shared_orgs])
@@ -125,7 +134,7 @@ class User(db.Model, UserMixin):
         return organizations
 
 
-class User_Roles(db.Model):
+class User_Roles(db.Model, TMC_Data_Model):
     __tablename__ = "user_roles"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -137,7 +146,7 @@ class User_Roles(db.Model):
 ##### HAVEN TABLES
 
 
-class BigQuery_User(db.Model):
+class BigQuery_User(db.Model, TMC_Data_Model):
     __tablename__ = "bigquery_user"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -151,7 +160,7 @@ class BigQuery_User(db.Model):
     organization: Mapped[TMC_Organization] = relationship(backref="bigquery_users")
 
 
-class Data_Owners(db.Model):
+class Data_Owners(db.Model, TMC_Data_Model):
     __tablename__ = "data_owners"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -171,7 +180,7 @@ class Data_Owners(db.Model):
 ##### ORDERS
 
 
-class Orders(db.Model):
+class Orders(db.Model, TMC_Data_Model):
     __tablename__ = "orders"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -201,7 +210,7 @@ class Orders(db.Model):
 ##### ORGANIZATION
 
 
-class TMC_Organization_Contacts(db.Model):
+class TMC_Organization_Contacts(db.Model, TMC_Data_Model):
     __tablename__ = "organization_contacts"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -219,7 +228,7 @@ class TMC_Organization_Contacts(db.Model):
     deactivated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
 
-class TMC_Organization_Tags(db.Model):
+class TMC_Organization_Tags(db.Model, TMC_Data_Model):
     __tablename__ = "organization_tags"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -234,7 +243,7 @@ class TMC_Organization_Tags(db.Model):
 ##### TAGS
 
 
-class TMC_Tags(db.Model):
+class TMC_Tags(db.Model, TMC_Data_Model):
     __tablename__ = "tags"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -245,7 +254,7 @@ class TMC_Tags(db.Model):
 ##### TOOLS
 
 
-class Vendor(db.Model):
+class Vendor(db.Model, TMC_Data_Model):
     __tablename__ = "vendors"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -266,7 +275,7 @@ class Vendor(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
 
-class Tool_Categories(db.Model):
+class Tool_Categories(db.Model, TMC_Data_Model):
     __tablename__ = "tool_categories"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -282,7 +291,7 @@ class Tool_Categories(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
 
-class Tools(db.Model):
+class Tools(db.Model, TMC_Data_Model):
     __tablename__ = "tools"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -312,7 +321,7 @@ class Tools(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
 
 
-class Tool_Tags(db.Model):
+class Tool_Tags(db.Model, TMC_Data_Model):
     __tablename__ = "tool_tags"
     __table_args__ = {"schema": "tmc_dev"}
 
@@ -322,7 +331,7 @@ class Tool_Tags(db.Model):
 
 
 # NOTE - This table must be defined downstream of Tools
-class OrderItems(db.Model):
+class OrderItems(db.Model, TMC_Data_Model):
     __tablename__ = "order_items"
     __table_args__ = {"schema": "tmc_dev"}
 

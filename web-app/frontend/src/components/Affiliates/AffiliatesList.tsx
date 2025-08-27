@@ -15,7 +15,7 @@ export function AffiliatesList({
   onEdit,
   onDelete,
 }: AffiliatesListProps) {
-  if (affiliates.length === 0) {
+  if (!affiliates || affiliates.length === 0 || !Array.isArray(affiliates)) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-6 text-center">
         <p className="text-gray-500">
@@ -107,8 +107,9 @@ export function AffiliatesList({
                         : "bg-red-100 text-red-800"
                     }`}
                   >
-                    {affiliate.status.charAt(0).toUpperCase() +
-                      affiliate.status.slice(1)}
+                    {affiliate.status ? 
+                      affiliate.status.charAt(0).toUpperCase() + affiliate.status.slice(1) 
+                      : 'Unknown'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
