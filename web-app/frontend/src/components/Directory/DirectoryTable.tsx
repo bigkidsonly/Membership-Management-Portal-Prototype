@@ -41,7 +41,7 @@ export function DirectoryTable({
 }: DirectoryTableProps) {
   const [sortField, setSortField] = useState<keyof MemberOrganization>("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const { user } = useUser();
+  //const { user } = useUser();
   // Handle sorting
   const handleSort = (field: keyof MemberOrganization) => {
     if (sortField === field) {
@@ -87,10 +87,11 @@ export function DirectoryTable({
   };
   // Check if the current user can edit this organization
   const canEditOrganization = (orgId: string) => {
+    return true;
     // Admin can edit any organization
-    if (user?.role === "admin") return true;
+    // if (user?.role === "admin") return true;
     // Staff can only edit their own organization
-    return user?.organizationId === orgId;
+    // return user?.organizationId === orgId;
   };
   if (organizations.length === 0) {
     return (
@@ -125,16 +126,12 @@ export function DirectoryTable({
               organizations
             </p>
           </div>
-          {user && (
-            <div className="mt-3 md:mt-0 flex items-center px-4 py-2 bg-blue-50 border border-blue-100 rounded-lg">
-              <Info className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
-              <span className="text-sm text-blue-700">
-                {user.role === "admin"
-                  ? "As an admin, you can edit all organization profiles"
-                  : 'Your organization is highlighted in blue. Click "Edit Profile" to make changes.'}
-              </span>
-            </div>
-          )}
+          <div className="mt-3 md:mt-0 flex items-center px-4 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+            <Info className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
+            <span className="text-sm text-blue-700">
+              As an admin, you can edit all organization profiles
+            </span>
+          </div>
         </div>
       </div>
       <div className="overflow-x-auto">

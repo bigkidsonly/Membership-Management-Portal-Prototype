@@ -1,35 +1,10 @@
-import React from 'react';
-import { Plus, ChevronRight } from 'lucide-react';
+import { Plus, ChevronRight } from "lucide-react";
+import { recentActivity } from "@/data/activityLog";
+import { pendingRequests } from "@/data/activityLog";
+
 export function AffiliatePanel() {
-  const recentActivity = [{
-    affiliate: 'Tech Justice Collective',
-    action: 'Updated profile',
-    time: '2 hours ago'
-  }, {
-    affiliate: 'Digital Democracy Project',
-    action: 'Added new user',
-    time: '5 hours ago'
-  }, {
-    affiliate: 'Community Tech Hub',
-    action: 'Placed marketplace order',
-    time: 'Yesterday'
-  }, {
-    affiliate: 'Open Source Alliance',
-    action: 'Completed onboarding',
-    time: '2 days ago'
-  }, {
-    affiliate: 'Data for Good',
-    action: 'Joined project #1274',
-    time: '3 days ago'
-  }];
-  const pendingRequests = [{
-    name: 'Urban Tech Network',
-    status: 'Membership Application'
-  }, {
-    name: 'Rural Connectivity Coalition',
-    status: 'Awaiting Documentation'
-  }];
-  return <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+  return (
+    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-200 bg-gray-50">
         <h3 className="text-lg font-medium text-gray-900">
           Affiliate Management
@@ -45,7 +20,8 @@ export function AffiliatePanel() {
             Recent Affiliate Activity
           </h4>
           <ul className="mt-2 divide-y divide-gray-200">
-            {recentActivity.map((item, index) => <li key={index} className="py-3">
+            {recentActivity.map((item, index) => (
+              <li key={index} className="py-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
@@ -55,7 +31,8 @@ export function AffiliatePanel() {
                   </div>
                   <span className="text-xs text-gray-400">{item.time}</span>
                 </div>
-              </li>)}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="mt-6">
@@ -63,7 +40,8 @@ export function AffiliatePanel() {
             Pending Affiliate Requests
           </h4>
           <ul className="mt-2 divide-y divide-gray-200">
-            {pendingRequests.map((item, index) => <li key={index} className="py-3">
+            {pendingRequests.map((item, index) => (
+              <li key={index} className="py-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
@@ -75,14 +53,19 @@ export function AffiliatePanel() {
                     <ChevronRight className="h-5 w-5" />
                   </button>
                 </div>
-              </li>)}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="mt-6 text-center">
-          <a href="#" className="text-sm font-medium text-primary hover:text-primary/80">
+          <a
+            href="#"
+            className="text-sm font-medium text-primary hover:text-primary/80"
+          >
             View All Affiliates
           </a>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }

@@ -3,7 +3,7 @@ import { DirectorySearch } from "../components/Directory/DirectorySearch";
 import { DirectoryTable } from "../components/Directory/DirectoryTable";
 import { DirectoryFilters } from "../components/Directory/DirectoryFilters";
 import { MemberOrganizationForm } from "../components/Directory/MemberOrganizationForm";
-import { memberOrganizations } from "../data/memberOrganizations";
+import { memberOrganizations } from "../data/organization";
 import { MemberOrganization } from "./../types/memberOrganization";
 import { Building, Users, Filter } from "lucide-react";
 interface ActiveFilter {
