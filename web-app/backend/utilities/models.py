@@ -25,7 +25,7 @@ class TMC_Organization(db.Model):
     organization_type: Mapped[str] = mapped_column(String(100), nullable=False)
     organization_size: Mapped[str] = mapped_column(String(100), nullable=True)
     member_tier: Mapped[str] = mapped_column(String(100), nullable=True)
-    join_date: Mapped[Date] = mapped_column(Date, nullable=True)
+    join_date: Mapped[Date] = mapped_column(Date, nullable=False)
     location: Mapped[str] = mapped_column(String(100), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
