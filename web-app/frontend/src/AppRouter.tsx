@@ -9,11 +9,11 @@ import { Billing } from "./pages/Billing";
 import { Directory } from "./pages/Directory";
 import { Support } from "./pages/Support";
 import { ToolDetail } from "./pages/marketplace/ToolDetail";
+import { ThruTalkDetail } from "./pages/marketplace/ThruTalkDetail";
 import { PurchaseRequest } from "./pages/marketplace/PurchaseRequest";
 import { OrdersDashboard } from "./pages/marketplace/OrdersDashboard";
 import { VendorDirectory } from "./pages/marketplace/VendorDirectory";
-import { UserProvider } from "./context/UserContext";
-
+import { UserManagement } from "./pages/UserManagement";
 export function AppRouter() {
   return (
     <BrowserRouter>
@@ -23,6 +23,10 @@ export function AppRouter() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="marketplace" element={<Marketplace />} />
           <Route path="marketplace/tool/:id" element={<ToolDetail />} />
+          <Route
+            path="marketplace/tool/thrutalk"
+            element={<ThruTalkDetail />}
+          />
           <Route
             path="marketplace/purchase/:id"
             element={<PurchaseRequest />}
@@ -34,6 +38,7 @@ export function AppRouter() {
           <Route path="billing" element={<Billing />} />
           <Route path="directory" element={<Directory />} />
           <Route path="support" element={<Support />} />
+          <Route path="user-management" element={<UserManagement />} />
         </Route>
       </Routes>
     </BrowserRouter>
