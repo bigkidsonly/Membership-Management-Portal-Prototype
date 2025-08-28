@@ -1,3 +1,2 @@
 revision:
-	@echo revision
-# 	@alembic revision --autogenerate -m "$$VERSION"
+	@alembic revision --autogenerate -m "$(name)"
