@@ -1,49 +1,52 @@
-import React from "react";
+import React from 'react';
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string;
-  variant?: "default" | "outline" | "destructive" | "ghost" | "link";
-  size?: "default" | "sm" | "lg" | "icon";
   children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline' | 'destructive' | 'ghost' | 'link';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  className?: string;
 }
+
 export function Button({
-  className = "",
-  variant = "default",
-  size = "default",
   children,
+  variant = 'primary',
+  size = 'md',
+  className = '',
+  type = 'button',
   ...props
 }: ButtonProps) {
-  const getVariantClasses = () => {
-    switch (variant) {
-      case "outline":
-        return "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50";
-      case "destructive":
-        return "bg-red-500 text-white hover:bg-red-600";
-      case "ghost":
-        return "bg-transparent text-gray-700 hover:bg-gray-100";
-      case "link":
-        return "bg-transparent text-primary underline-offset-4 hover:underline";
-      default:
-        return "bg-primary text-white hover:bg-primary/90";
-    }
+  const baseClasses = 'relative inline-flex items-center justify-center font-bold tracking-wide transform rotate-[-0.5deg] transition-all duration-300 ease-out active:rotate-[0.5deg] active:scale-95 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2';
+  
+  const variantClasses = {
+    primary: 'bg-[#000000] text-white hover:bg-black/90 after:border-[#CC2936]',
+    secondary: 'bg-[#2E86AB] text-white hover:bg-[#2E86AB]/90 after:border-[#000000]',
+    outline: 'bg-transparent text-black hover:bg-black/5 after:border-black border-2 border-black',
+    destructive: 'bg-[#CC2936] text-white hover:bg-[#CC2936]/90 after:border-black',
+    ghost: 'bg-transparent text-black hover:bg-black/5 after:border-transparent',
+    link: 'bg-transparent text-black underline-offset-4 hover:underline after:border-transparent'
   };
-  const getSizeClasses = () => {
-    switch (size) {
-      case "sm":
-        return "h-8 px-3 text-xs";
-      case "lg":
-        return "h-12 px-8 text-base";
-      case "icon":
-        return "h-9 w-9";
-      default:
-        return "h-10 px-4 py-2 text-sm";
-    }
+  
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 text-sm h-8',
+    md: 'px-4 py-2 text-base h-10',
+    lg: 'px-6 py-3 text-lg h-12',
+    icon: 'h-9 w-9 p-0'
   };
+  
+  const sketchyBorder = variant !== 'link' && variant !== 'ghost' ? `
+    after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black 
+    after:rounded-md after:transform after:rotate-[0.4deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]
+    before:content-[''] before:absolute before:inset-0 before:border-2 before:border-black 
+    before:rounded-md before:transform before:rotate-[-0.7deg] before:translate-x-[-1px] before:translate-y-[-1px] before:pointer-events-none before:z-[-1]
+  ` : '';
+  
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ${getVariantClasses()} ${getSizeClasses()} ${className}`}
+      type={type}
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${sketchyBorder} ${className}`}
       {...props}
     >
-      {children}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 }
