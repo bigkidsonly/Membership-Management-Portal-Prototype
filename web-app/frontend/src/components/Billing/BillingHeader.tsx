@@ -8,7 +8,6 @@ import {
   Calendar,
   User,
 } from "lucide-react";
-
 interface BillingHeaderProps {
   membershipData: {
     type: string;
@@ -17,7 +16,6 @@ interface BillingHeaderProps {
     renewalDate: string;
   };
 }
-
 export function BillingHeader({ membershipData }: BillingHeaderProps) {
   const daysUntilRenewal = () => {
     const today = new Date();
@@ -26,120 +24,89 @@ export function BillingHeader({ membershipData }: BillingHeaderProps) {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
-
   const renderStatusBadge = () => {
     switch (membershipData.status) {
       case "active":
         return (
-          <span className="relative inline-flex items-center px-3 py-1.5 text-xs font-extrabold bg-[#2E86AB] text-white transform rotate-[0.5deg]">
-            <CheckCircle className="w-3 h-3 mr-1.5 transform rotate-[-2deg]" />
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 shadow-md">
+            <CheckCircle className="w-3 h-3 mr-1.5" />
             Active
-            <span className="absolute inset-0 border-2 border-black transform rotate-[-0.8deg] pointer-events-none"></span>
-            <span className="absolute inset-0 border-2 border-black transform rotate-[0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></span>
           </span>
         );
       case "expiring":
         return (
-          <span className="relative inline-flex items-center px-3 py-1.5 text-xs font-extrabold bg-[#F18F01] text-white transform rotate-[-0.3deg]">
-            <AlertTriangle className="w-3 h-3 mr-1.5 transform rotate-[2deg]" />
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 shadow-md">
+            <AlertTriangle className="w-3 h-3 mr-1.5" />
             Expiring Soon
-            <span className="absolute inset-0 border-2 border-black transform rotate-[0.7deg] pointer-events-none"></span>
-            <span className="absolute inset-0 border-2 border-black transform rotate-[-0.4deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></span>
           </span>
         );
       case "expired":
         return (
-          <span className="relative inline-flex items-center px-3 py-1.5 text-xs font-extrabold bg-[#CC2936] text-white transform rotate-[0.4deg]">
-            <XCircle className="w-3 h-3 mr-1.5 transform rotate-[-1deg]" />
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 shadow-md">
+            <XCircle className="w-3 h-3 mr-1.5" />
             Expired
-            <span className="absolute inset-0 border-2 border-black transform rotate-[-0.6deg] pointer-events-none"></span>
-            <span className="absolute inset-0 border-2 border-black transform rotate-[0.5deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></span>
           </span>
         );
       default:
         return null;
     }
   };
-
   return (
-    <div className="relative bg-[#FEFEFE] p-8 transform rotate-[0.3deg] transition-all duration-300 hover:rotate-[-0.2deg] hover:scale-[1.01]">
-      {/* Hand-drawn border layers */}
-      <div className="absolute inset-0 border-2 border-black transform rotate-[-0.5deg] translate-x-[2px] translate-y-[2px]"></div>
-      <div className="absolute inset-0 border-2 border-black transform rotate-[0.2deg]"></div>
-
-      {/* Decorative sketchy elements */}
-      <div className="absolute top-0 right-0 w-24 h-24 border border-dashed border-[#6B6B6B] rounded-full transform rotate-[15deg] -mr-12 -mt-12 opacity-20"></div>
-      <div className="absolute bottom-0 left-0 w-32 h-32 border border-dashed border-[#6B6B6B] rounded-full transform rotate-[-20deg] -ml-16 -mb-16 opacity-20"></div>
-
-      <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
+    <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 transform transition-all duration-300 hover:shadow-xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-b from-primary/5 to-transparent rounded-full -mr-32 -mt-32 opacity-70"></div>
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-t from-secondary/5 to-transparent rounded-full -ml-24 -mb-24 opacity-70"></div>
+      <div className="relative flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center">
-            <div className="relative bg-black p-3 mr-3 transform rotate-[-2deg]">
-              <DollarSign className="h-6 w-6 text-[#FDFDF8] transform rotate-[1deg]" />
-              <div className="absolute inset-0 border-2 border-black transform rotate-[1.5deg] translate-x-[1px] translate-y-[1px]"></div>
-            </div>
-            <div>
-              <h1 className="text-3xl font-extrabold text-black tracking-tight transform rotate-[-0.3deg] relative">
-                Billing & Payments
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#CC2936] transform rotate-[0.5deg]"></span>
-              </h1>
-            </div>
+            <h1 className="text-2xl font-bold text-primary tracking-tight">
+              Billing & Payments
+            </h1>
           </div>
-          <p className="text-sm text-[#6B6B6B] mt-3 ml-11 transform rotate-[0.2deg] font-medium">
+          <p className="text-sm text-gray-500 mt-2 ml-11">
             Manage your membership, invoices, and payment methods
           </p>
         </div>
-
-        <div className="mt-4 md:mt-0 flex items-center gap-3">
+        <div className="mt-4 md:mt-0 flex items-center">
           {renderStatusBadge()}
-
-          <div className="relative px-3 py-2 bg-[#F8F8F8] text-black font-extrabold flex items-center text-sm transform rotate-[-0.4deg]">
-            <Clock className="w-4 h-4 mr-1.5 transform rotate-[3deg]" />
+          <div className="ml-3 text-sm bg-primary/5 px-3 py-1 rounded-full text-primary font-medium flex items-center shadow-md">
+            <Clock className="w-4 h-4 mr-1.5" />
             {daysUntilRenewal() > 0
               ? `Renews in ${daysUntilRenewal()} days`
               : "Renewal overdue"}
-            <div className="absolute inset-0 border-2 border-black transform rotate-[0.6deg] pointer-events-none"></div>
-            <div className="absolute inset-0 border-2 border-black transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
           </div>
         </div>
       </div>
-
-      <div className="mt-6 relative bg-[#F8F8F8] p-5 transform rotate-[0.1deg]">
-        <div className="absolute inset-0 border-2 border-black border-dashed transform rotate-[-0.3deg]"></div>
-        <div className="absolute inset-0 border-2 border-black border-dashed transform rotate-[0.4deg] translate-x-[1px] translate-y-[1px]"></div>
-
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="group relative transform hover:rotate-[0.5deg] transition-transform duration-300">
-            <span className="text-xs font-extrabold text-[#6B6B6B] uppercase tracking-wider flex items-center transform rotate-[-0.2deg]">
-              <User className="w-3 h-3 mr-1.5 transform rotate-[5deg]" />
+      <div className="mt-6 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-5 border border-primary/10 shadow-md relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="group relative">
+            <span className="text-xs font-semibold text-primary/70 uppercase tracking-wider flex items-center">
+              <User className="w-3 h-3 mr-1.5" />
               Membership Type
             </span>
-            <p className="mt-1 font-extrabold text-black transform rotate-[0.3deg] text-lg">
+            <p className="mt-1 font-semibold text-gray-900 truncate">
               {membershipData.type}
             </p>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 border border-black border-dashed transform rotate-[1deg] transition-opacity duration-200"></div>
+            <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 group-hover:bg-primary/5 transition-opacity duration-200"></div>
           </div>
-
-          <div className="group relative transform hover:rotate-[-0.3deg] transition-transform duration-300">
-            <span className="text-xs font-extrabold text-[#6B6B6B] uppercase tracking-wider flex items-center transform rotate-[0.3deg]">
-              <Calendar className="w-3 h-3 mr-1.5 transform rotate-[-4deg]" />
+          <div className="group relative">
+            <span className="text-xs font-semibold text-primary/70 uppercase tracking-wider flex items-center">
+              <Calendar className="w-3 h-3 mr-1.5" />
               Current Period
             </span>
-            <p className="mt-1 text-[#6B6B6B] font-bold transform rotate-[-0.2deg]">
+            <p className="mt-1 text-gray-700 truncate">
               {membershipData.currentPeriod}
             </p>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 border border-black border-dashed transform rotate-[-0.8deg] transition-opacity duration-200"></div>
+            <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 group-hover:bg-primary/5 transition-opacity duration-200"></div>
           </div>
-
-          <div className="group relative transform hover:rotate-[0.4deg] transition-transform duration-300">
-            <span className="text-xs font-extrabold text-[#6B6B6B] uppercase tracking-wider flex items-center transform rotate-[-0.4deg]">
-              <Clock className="w-3 h-3 mr-1.5 transform rotate-[2deg]" />
+          <div className="group relative">
+            <span className="text-xs font-semibold text-primary/70 uppercase tracking-wider flex items-center">
+              <Clock className="w-3 h-3 mr-1.5" />
               Renewal Date
             </span>
-            <p className="mt-1 text-[#6B6B6B] font-extrabold transform rotate-[0.2deg]">
+            <p className="mt-1 text-gray-700 font-medium truncate">
               {new Date(membershipData.renewalDate).toLocaleDateString()}
             </p>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 border border-black border-dashed transform rotate-[0.6deg] transition-opacity duration-200"></div>
+            <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 group-hover:bg-primary/5 transition-opacity duration-200"></div>
           </div>
         </div>
       </div>

@@ -19,7 +19,6 @@ interface UserTableProps {
 export function UserTable({ searchQuery }: UserTableProps) {
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [editingUser, setEditingUser] = useState<any | null>(null);
   // Sample user data
@@ -29,8 +28,8 @@ export function UserTable({ searchQuery }: UserTableProps) {
       name: "Sarah Johnson",
       email: "sarah.johnson@techjustice.org",
       googleGroup: "Tech Justice Coalition",
-      memberStatus: "Member",
-      userType: "Staff",
+      memberStatus: ["TMC Portal", "Haven"],
+      userType: "Administrator",
       title: "Program Director",
       submittedAt: "2023-10-15T10:30:00",
       status: "approved",
@@ -43,8 +42,8 @@ export function UserTable({ searchQuery }: UserTableProps) {
       name: "David Rodriguez",
       email: "drodriguez@dataequity.net",
       googleGroup: "Data Equity Project",
-      memberStatus: "Affiliate",
-      userType: "Contractor",
+      memberStatus: ["Haven"],
+      userType: "Viewer",
       title: "Data Analyst",
       submittedAt: "2023-10-16T09:15:00",
       status: "pending",
@@ -57,8 +56,8 @@ export function UserTable({ searchQuery }: UserTableProps) {
       name: "Aisha Patel",
       email: "apatel@communitytech.org",
       googleGroup: "Community Tech Alliance",
-      memberStatus: "Member",
-      userType: "Staff",
+      memberStatus: ["TMC Portal", "Haven", "Hex"],
+      userType: "MOU Signer",
       title: "Executive Director",
       submittedAt: "2023-10-14T11:45:00",
       status: "under_review",
@@ -71,8 +70,8 @@ export function UserTable({ searchQuery }: UserTableProps) {
       name: "Marcus Williams",
       email: "mwilliams@digitalrights.org",
       googleGroup: "Digital Rights Coalition",
-      memberStatus: "Member",
-      userType: "Service Account",
+      memberStatus: ["Hex"],
+      userType: "Administrator",
       title: "API Integration",
       submittedAt: "2023-10-13T14:20:00",
       status: "info_requested",
@@ -85,8 +84,8 @@ export function UserTable({ searchQuery }: UserTableProps) {
       name: "Elena Gonzalez",
       email: "egonzalez@techaccess.org",
       googleGroup: "Tech Access Initiative",
-      memberStatus: "Affiliate",
-      userType: "Contractor",
+      memberStatus: ["TMC Portal"],
+      userType: "Viewer",
       title: "UX Researcher",
       submittedAt: "2023-10-12T16:30:00",
       status: "rejected",
@@ -126,20 +125,6 @@ export function UserTable({ searchQuery }: UserTableProps) {
       setSortDirection("asc");
     }
   };
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedRows(sortedUsers.map((user) => user.id));
-    } else {
-      setSelectedRows([]);
-    }
-  };
-  const handleSelectRow = (id: string) => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
-    } else {
-      setSelectedRows([...selectedRows, id]);
-    }
-  };
   const toggleDropdown = (id: string) => {
     if (dropdownOpen === id) {
       setDropdownOpen(null);
@@ -164,27 +149,37 @@ export function UserTable({ searchQuery }: UserTableProps) {
       <ChevronDown className="h-4 w-4 ml-1" />
     );
   };
+  // Define platform tag colors
+  const getPlatformTagColor = (platform: string) => {
+    switch (platform) {
+      case "Haven":
+        return "bg-blue-100 text-blue-800";
+      case "Hex":
+        return "bg-purple-100 text-purple-800";
+      case "TMC Portal":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+  // Define user type tag colors
+  const getUserTypeTagColor = (userType: string) => {
+    switch (userType) {
+      case "Administrator":
+        return "bg-red-100 text-red-800";
+      case "MOU Signer":
+        return "bg-amber-100 text-amber-800";
+      case "Viewer":
+        return "bg-teal-100 text-teal-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-                  onChange={handleSelectAll}
-                  checked={
-                    selectedRows.length === sortedUsers.length &&
-                    sortedUsers.length > 0
-                  }
-                />
-              </div>
-            </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
@@ -211,7 +206,7 @@ export function UserTable({ searchQuery }: UserTableProps) {
               onClick={() => handleSort("memberStatus")}
             >
               <div className="flex items-center">
-                Member Status
+                Platforms
                 {renderSortIcon("memberStatus")}
               </div>
             </th>
@@ -259,20 +254,7 @@ export function UserTable({ searchQuery }: UserTableProps) {
         <tbody className="bg-white divide-y divide-gray-200">
           {sortedUsers.length > 0 ? (
             sortedUsers.map((user) => (
-              <tr
-                key={user.id}
-                className={selectedRows.includes(user.id) ? "bg-blue-50" : ""}
-              >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-                      checked={selectedRows.includes(user.id)}
-                      onChange={() => handleSelectRow(user.id)}
-                    />
-                  </div>
-                </td>
+              <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex flex-col">
                     <div className="text-sm font-medium text-gray-900">
@@ -287,25 +269,24 @@ export function UserTable({ searchQuery }: UserTableProps) {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.memberStatus === "Member"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800"
-                    }`}
-                  >
-                    {user.memberStatus}
-                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {user.memberStatus.map((platform, index) => (
+                      <span
+                        key={index}
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPlatformTagColor(
+                          platform
+                        )}`}
+                      >
+                        {platform}
+                      </span>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.userType === "Staff"
-                        ? "bg-purple-100 text-purple-800"
-                        : user.userType === "Contractor"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getUserTypeTagColor(
+                      user.userType
+                    )}`}
                   >
                     {user.userType}
                   </span>
@@ -392,7 +373,7 @@ export function UserTable({ searchQuery }: UserTableProps) {
           ) : (
             <tr>
               <td
-                colSpan={9}
+                colSpan={8}
                 className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center"
               >
                 No users found matching your search criteria

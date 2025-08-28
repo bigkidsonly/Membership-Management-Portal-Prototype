@@ -5,7 +5,7 @@ interface User {
   name: string;
   email: string;
   googleGroup: string;
-  memberStatus: string;
+  memberStatus: string[];
   userType: string;
   title: string;
   status: string;
@@ -57,6 +57,18 @@ export function EditUserForm({ user, onClose, onSave }: EditUserFormProps) {
       badges: updatedBadges,
     });
   };
+  const handlePlatformChange = (platform: string, checked: boolean) => {
+    let updatedPlatforms = [...formData.memberStatus];
+    if (checked && !updatedPlatforms.includes(platform)) {
+      updatedPlatforms.push(platform);
+    } else if (!checked && updatedPlatforms.includes(platform)) {
+      updatedPlatforms = updatedPlatforms.filter((p) => p !== platform);
+    }
+    setFormData({
+      ...formData,
+      memberStatus: updatedPlatforms,
+    });
+  };
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
@@ -68,6 +80,8 @@ export function EditUserForm({ user, onClose, onSave }: EditUserFormProps) {
     if (!formData.googleGroup.trim())
       newErrors.googleGroup = "Organization is required";
     if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (formData.memberStatus.length === 0)
+      newErrors.memberStatus = "At least one platform must be selected";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -194,22 +208,51 @@ export function EditUserForm({ user, onClose, onSave }: EditUserFormProps) {
                   )}
                 </div>
                 <div>
-                  <label
-                    htmlFor="memberStatus"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Member Status
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Platforms *
                   </label>
-                  <select
-                    id="memberStatus"
-                    name="memberStatus"
-                    value={formData.memberStatus}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    <option value="Member">Member</option>
-                    <option value="Affiliate">Affiliate</option>
-                  </select>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.memberStatus.includes("Haven")}
+                        onChange={(e) =>
+                          handlePlatformChange("Haven", e.target.checked)
+                        }
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Haven</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.memberStatus.includes("Hex")}
+                        onChange={(e) =>
+                          handlePlatformChange("Hex", e.target.checked)
+                        }
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Hex</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.memberStatus.includes("TMC Portal")}
+                        onChange={(e) =>
+                          handlePlatformChange("TMC Portal", e.target.checked)
+                        }
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        TMC Portal
+                      </span>
+                    </label>
+                  </div>
+                  {errors.memberStatus && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.memberStatus}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -225,9 +268,9 @@ export function EditUserForm({ user, onClose, onSave }: EditUserFormProps) {
                     onChange={handleChange}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="Staff">Staff</option>
-                    <option value="Contractor">Contractor</option>
-                    <option value="Service Account">Service Account</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="MOU Signer">MOU Signer</option>
+                    <option value="Viewer">Viewer</option>
                   </select>
                 </div>
                 <div>

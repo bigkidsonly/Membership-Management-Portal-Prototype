@@ -10,8 +10,12 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
     lastName: "",
     email: "",
     googleGroup: "",
-    memberStatus: "Member",
-    userType: "Staff",
+    memberStatus: {
+      haven: false,
+      hex: false,
+      tmcPortal: false,
+    },
+    userType: "Viewer",
     title: "",
     requestedBadges: {
       voting: false,
@@ -49,6 +53,16 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
       },
     });
   };
+  const handlePlatformChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData({
+      ...formData,
+      memberStatus: {
+        ...formData.memberStatus,
+        [name]: checked,
+      },
+    });
+  };
   const validateStep = (currentStep: number) => {
     const newErrors: Record<string, string> = {};
     if (currentStep === 1) {
@@ -63,9 +77,16 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
       }
     } else if (currentStep === 2) {
       if (!formData.googleGroup.trim())
-        newErrors.googleGroup = "Google Group is required";
+        newErrors.googleGroup = "Organization is required";
       if (!formData.title.trim())
         newErrors.title = "Title/Position is required";
+      if (
+        !formData.memberStatus.haven &&
+        !formData.memberStatus.hex &&
+        !formData.memberStatus.tmcPortal
+      ) {
+        newErrors.platforms = "At least one platform must be selected";
+      }
     } else if (currentStep === 3) {
       const hasBadges = Object.values(formData.requestedBadges).some((v) => v);
       if (hasBadges && !formData.justification.trim()) {
@@ -278,6 +299,50 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Platforms *
+                  </label>
+                  <div className="space-y-2 mt-2">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="haven"
+                        checked={formData.memberStatus.haven}
+                        onChange={handlePlatformChange}
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Haven</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="hex"
+                        checked={formData.memberStatus.hex}
+                        onChange={handlePlatformChange}
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Hex</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="tmcPortal"
+                        checked={formData.memberStatus.tmcPortal}
+                        onChange={handlePlatformChange}
+                        className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        TMC Portal
+                      </span>
+                    </label>
+                  </div>
+                  {errors.platforms && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.platforms}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     User Type *
                   </label>
                   <select
@@ -287,9 +352,9 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
                     onChange={handleChange}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="Staff">Staff</option>
-                    <option value="Contractor">Contractor</option>
-                    <option value="Service Account">Service Account</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="MOU Signer">MOU Signer</option>
+                    <option value="Viewer">Viewer</option>
                   </select>
                 </div>
                 <div>
@@ -472,7 +537,7 @@ export function ApplicationForm({ onClose }: ApplicationFormProps) {
             {step < 3 ? (
               <button
                 type="button"
-                onClick={handleSubmit}
+                onClick={handleNextStep}
                 className="flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
                 <ArrowRight className="h-4 w-4 mr-2" />

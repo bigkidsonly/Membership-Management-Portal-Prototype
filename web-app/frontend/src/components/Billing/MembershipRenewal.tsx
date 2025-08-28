@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { Calendar, Check, Clock, CreditCard, Shield, HelpCircle, Info } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Calendar,
+  Check,
+  Clock,
+  CreditCard,
+  Shield,
+  HelpCircle,
+  Info,
+} from "lucide-react";
 interface MembershipRenewalProps {
   membershipData: {
     type: string;
@@ -14,30 +22,34 @@ interface MembershipRenewalProps {
 export function MembershipRenewal({
   membershipData,
   onToggleAutoRenewal,
-  onChangePlan
+  onChangePlan,
 }: MembershipRenewalProps) {
   const [selectedPlan, setSelectedPlan] = useState(membershipData.currentPlan);
   const [hoverPlan, setHoverPlan] = useState<string | null>(null);
-  const plans = [{
-    id: 'monthly',
-    name: 'Monthly',
-    price: 10000,
-    description: 'Billed monthly',
-    tooltip: 'Pay month-to-month with more flexibility'
-  }, {
-    id: 'quarterly',
-    name: 'Quarterly',
-    price: 30000,
-    description: 'Billed every 3 months',
-    tooltip: 'Our standard billing cycle'
-  }, {
-    id: 'yearly',
-    name: 'Yearly',
-    price: 120000,
-    description: 'Billed annually',
-    tooltip: 'Pay once per year'
-  }];
-  const handlePlanChange = planId => {
+  const plans = [
+    {
+      id: "monthly",
+      name: "Monthly",
+      price: 10000,
+      description: "Billed monthly",
+      tooltip: "Pay month-to-month with more flexibility",
+    },
+    {
+      id: "quarterly",
+      name: "Quarterly",
+      price: 30000,
+      description: "Billed every 3 months",
+      tooltip: "Our standard billing cycle",
+    },
+    {
+      id: "yearly",
+      name: "Yearly",
+      price: 120000,
+      description: "Billed annually",
+      tooltip: "Pay once per year",
+    },
+  ];
+  const handlePlanChange = (planId) => {
     setSelectedPlan(planId);
     onChangePlan(planId);
   };
@@ -50,17 +62,26 @@ export function MembershipRenewal({
   };
   const renderProgressBar = () => {
     const daysLeft = daysUntilRenewal();
-    const totalDays = membershipData.currentPlan === 'yearly' ? 365 : membershipData.currentPlan === 'quarterly' ? 90 : 30;
-    const progress = Math.max(0, Math.min(100, daysLeft / totalDays * 100));
-    return <div className="mt-5">
+    const totalDays =
+      membershipData.currentPlan === "yearly"
+        ? 365
+        : membershipData.currentPlan === "quarterly"
+        ? 90
+        : 30;
+    const progress = Math.max(0, Math.min(100, (daysLeft / totalDays) * 100));
+    return (
+      <div className="mt-5">
         <div className="flex justify-between text-xs text-gray-500 mb-1.5">
           <span className="font-medium">Current period</span>
           <span className="font-medium">Renewal</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner">
-          <div className="bg-primary h-3 rounded-full transition-all duration-700 ease-in-out" style={{
-          width: `${100 - progress}%`
-        }}></div>
+          <div
+            className="bg-primary h-3 rounded-full transition-all duration-700 ease-in-out"
+            style={{
+              width: `${100 - progress}%`,
+            }}
+          ></div>
         </div>
         <div className="flex justify-between mt-2">
           <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full flex items-center font-medium shadow-sm">
@@ -72,9 +93,11 @@ export function MembershipRenewal({
             {daysLeft} days left
           </span>
         </div>
-      </div>;
+      </div>
+    );
   };
-  return <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 transform transition-all duration-300 hover:shadow-xl">
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 transform transition-all duration-300 hover:shadow-xl">
       <h2 className="text-lg font-bold text-primary flex items-center tracking-tight">
         <div className="bg-primary/10 p-2 rounded-lg mr-3 shadow-sm">
           <Calendar className="w-5 h-5 text-primary" />
@@ -94,18 +117,35 @@ export function MembershipRenewal({
           </div>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map(plan => <div key={plan.id} className={`border rounded-lg p-5 cursor-pointer transition-all duration-300 transform ${selectedPlan === plan.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20 shadow-lg scale-[1.02]' : hoverPlan === plan.id ? 'border-gray-300 hover:border-primary/30 hover:bg-primary/5 shadow-md -translate-y-1' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm hover:-translate-y-1'} ${plan.id === 'quarterly' ? 'relative overflow-hidden' : ''}`} onClick={() => handlePlanChange(plan.id)} onMouseEnter={() => setHoverPlan(plan.id)} onMouseLeave={() => setHoverPlan(null)}>
-              {plan.id === 'quarterly' && <div className="absolute top-0 right-0 bg-primary text-white text-xs px-2 py-1 transform rotate-45 translate-x-6 -translate-y-1 shadow-md">
+          {plans.map((plan) => (
+            <div
+              key={plan.id}
+              className={`border rounded-lg p-5 cursor-pointer transition-all duration-300 transform ${
+                selectedPlan === plan.id
+                  ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-lg scale-[1.02]"
+                  : hoverPlan === plan.id
+                  ? "border-gray-300 hover:border-primary/30 hover:bg-primary/5 shadow-md -translate-y-1"
+                  : "border-gray-200 hover:border-gray-300 hover:shadow-sm hover:-translate-y-1"
+              } ${plan.id === "quarterly" ? "relative overflow-hidden" : ""}`}
+              onClick={() => handlePlanChange(plan.id)}
+              onMouseEnter={() => setHoverPlan(plan.id)}
+              onMouseLeave={() => setHoverPlan(null)}
+            >
+              {plan.id === "quarterly" && (
+                <div className="absolute top-0 right-0 bg-primary text-white text-xs px-2 py-1 transform rotate-45 translate-x-6 -translate-y-1 shadow-md">
                   Current
-                </div>}
+                </div>
+              )}
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-semibold text-gray-900">{plan.name}</h3>
                   <p className="text-sm text-gray-500">{plan.description}</p>
                 </div>
-                {selectedPlan === plan.id && <div className="bg-primary rounded-full p-1 shadow-md">
+                {selectedPlan === plan.id && (
+                  <div className="bg-primary rounded-full p-1 shadow-md">
                     <Check className="w-4 h-4 text-white" />
-                  </div>}
+                  </div>
+                )}
               </div>
               <div className="mt-3">
                 <span className="text-2xl font-bold text-primary">
@@ -119,7 +159,8 @@ export function MembershipRenewal({
                 Changes take effect on 1/1/2026. Contact support for immediate
                 changes.
               </div>
-            </div>)}
+            </div>
+          ))}
         </div>
         <div className="mt-4 bg-blue-50 p-3 rounded-lg border border-blue-100 text-xs text-blue-700 flex items-start">
           <Info className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
@@ -135,16 +176,34 @@ export function MembershipRenewal({
       <div className="mt-8 flex items-center justify-between border-t pt-5">
         <div className="flex items-center">
           <div className="relative inline-block w-12 mr-3 align-middle select-none">
-            <input type="checkbox" id="auto-renewal" checked={membershipData.autoRenewal} onChange={onToggleAutoRenewal} className="opacity-0 w-0 h-0 absolute" />
-            <label htmlFor="auto-renewal" className={`block overflow-hidden h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out shadow-lg ${membershipData.autoRenewal ? 'bg-primary' : 'bg-gray-300'}`}>
-              <span className={`block h-6 w-6 rounded-full bg-white shadow-lg transform transition-transform duration-200 ease-in-out ${membershipData.autoRenewal ? 'translate-x-6' : 'translate-x-0'}`}></span>
+            <input
+              type="checkbox"
+              id="auto-renewal"
+              checked={membershipData.autoRenewal}
+              onChange={onToggleAutoRenewal}
+              className="opacity-0 w-0 h-0 absolute"
+            />
+            <label
+              htmlFor="auto-renewal"
+              className={`block overflow-hidden h-6 rounded-full cursor-pointer transition-colors duration-200 ease-in-out shadow-lg ${
+                membershipData.autoRenewal ? "bg-primary" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`block h-6 w-6 rounded-full bg-black shadow-lg transform transition-transform duration-200 ease-in-out ${
+                  membershipData.autoRenewal ? "translate-x-6" : "translate-x-0"
+                }`}
+              ></span>
             </label>
           </div>
-          <label htmlFor="auto-renewal" className="text-sm text-gray-700 cursor-pointer font-medium">
+          <label
+            htmlFor="auto-renewal"
+            className="text-sm text-gray-700 cursor-pointer font-medium"
+          >
             Auto-renew my membership
           </label>
         </div>
-        <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center">
+        <button className="px-4 py-2 bg-black text-white rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center">
           <CreditCard className="w-4 h-4 mr-2" />
           Renew Now
         </button>
@@ -152,20 +211,27 @@ export function MembershipRenewal({
       <div className="mt-4 text-xs bg-primary/5 p-3 rounded-lg border border-primary/10 text-gray-600 flex items-start shadow-sm">
         <Shield className="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
         <div>
-          {membershipData.autoRenewal ? <span>
-              Your membership will automatically renew on{' '}
-              <strong>January 1, 2026</strong>. You will be charged{' '}
+          {membershipData.autoRenewal ? (
+            <span>
+              Your membership will automatically renew on{" "}
+              <strong>January 1, 2026</strong>. You will be charged{" "}
               <strong>
                 $
-                {plans.find(p => p.id === selectedPlan)?.price.toLocaleString()}
-              </strong>{' '}
+                {plans
+                  .find((p) => p.id === selectedPlan)
+                  ?.price.toLocaleString()}
+              </strong>{" "}
               for your {selectedPlan} plan.
-            </span> : <span>
+            </span>
+          ) : (
+            <span>
               Your membership will not automatically renew. You will need to
               manually renew before the expiration date to avoid service
               interruption.
-            </span>}
+            </span>
+          )}
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }
