@@ -29,19 +29,27 @@ export function ProfileDropdown({ className = "" }: ProfileDropdownProps) {
       >
         <span className="sr-only">Open user menu</span>
         <div className="flex items-center">
-          <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full bg-highlight text-black flex items-center justify-center">
             <span className="font-semibold">AN</span>
           </div>
           <div className="ml-2 text-left hidden sm:block">
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-medium text-black-700">
               Affiliated Networks
             </div>
           </div>
-          <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
+          <ChevronDown className="ml-1 h-4 w-4 text-black-400" />
         </div>
       </button>
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div
+          className="origin-top-right absolute right-0 mt-2 w-52 p-3 
+             bg-[rgb(var(--ink-surface))] 
+             text-[rgb(var(--ink-primary))] 
+             rounded-lg 
+             border-2 border-black border-solid 
+             shadow-[2px_2px_0px_0px_rgba(0,0,0,0.8)] 
+             font-['IBM Plex Serif']"
+        >
           <div className="py-1">
             <Link
               to="/profile"
