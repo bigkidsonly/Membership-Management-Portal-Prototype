@@ -48,17 +48,19 @@ export function Header() {
                   src="https://can2-prod.s3.amazonaws.com/uploads/data/001/034/218/original/tmc_icon_500x500_white_black_transparent.png"
                   alt="The Movement Cooperative"
                 />
-                <div className="absolute -inset-1 border-2 border-black rounded-md transform rotate-[-0.8deg] pointer-events-none opacity-30"></div>
+                <div className="absolute -inset-1 rounded-md transform rotate-[-0.8deg] pointer-events-none opacity-30"></div>
               </div>
             </div>
             <Navigation className="hidden md:ml-6 md:flex md:space-x-8" />
           </div>
           <div className="flex items-center">
-            <button className="relative bg-[#000000] hover:bg-black/90 text-white px-3 py-1 rounded-md text-sm font-bold hidden md:block transform rotate-[-0.3deg] transition-all duration-300 hover:rotate-[0.2deg]
-              after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black after:rounded-md after:transform after:rotate-[0.4deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]">
+            <button
+              className="relative bg-[#000000] hover:bg-black/90 text-white px-3 py-1 rounded-md text-sm font-bold hidden md:block transform rotate-[-0.3deg] transition-all duration-300 hover:rotate-[0.2deg]
+              after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black after:rounded-md after:transform after:rotate-[0.4deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]"
+            >
               <div className="flex items-center relative z-10">
                 <MessageSquare className="h-4 w-4 mr-1" />
-                <span>Private Slack</span>
+                <span>Slack</span>
               </div>
             </button>
             <div className="ml-4 relative group">
@@ -70,9 +72,11 @@ export function Header() {
                 </span>
               </button>
               {/* Notification preview on hover */}
-              <div className="hidden group-hover:block absolute right-0 mt-2 w-80 bg-[#FDFDF8] rounded-md z-20 overflow-hidden transform rotate-[0.2deg]
+              <div
+                className="hidden group-hover:block absolute right-0 mt-2 w-80 bg-[#FDFDF8] rounded-md z-20 overflow-hidden transform rotate-[0.2deg]
                 before:content-[''] before:absolute before:inset-0 before:border-2 before:border-black before:rounded-md before:transform before:rotate-[-0.3deg] before:pointer-events-none before:z-[-1]
-                after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black after:rounded-md after:transform after:rotate-[0.1deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]">
+                after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black after:rounded-md after:transform after:rotate-[0.1deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]"
+              >
                 <div className="px-4 py-3 border-b border-gray-200">
                   <h3 className="text-sm font-semibold text-gray-900">
                     Notifications
