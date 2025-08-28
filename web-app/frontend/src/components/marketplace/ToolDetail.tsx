@@ -205,7 +205,7 @@ From connection through collaboration, Tableau is the most powerful, secure, and
               </div>
               <Link
                 to={`/marketplace/purchase/${tool.id}`}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-black text-white rounded-lg font-medium transition-colors"
               >
                 Request Purchase
               </Link>

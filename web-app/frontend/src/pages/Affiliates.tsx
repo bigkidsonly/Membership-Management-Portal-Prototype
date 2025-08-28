@@ -112,7 +112,7 @@ export function Affiliates() {
         <div className="flex space-x-3">
           <button
             onClick={() => setIsMembershipApplicationOpen(true)}
-            className="px-4 py-2 bg-primary text-white rounded-lg flex items-center"
+            className="px-4 py-2 bg-black text-white rounded-lg flex items-center"
           >
             <Plus className="h-4 w-4 mr-2" />
             Apply for New Affiliate

@@ -68,7 +68,7 @@ export function ToolCard({ tool }: ToolCardProps) {
           </div>
           <Link
             to={`/marketplace/tool/${tool.id}`}
-            className="w-full flex justify-center px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm"
+            className="w-full flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2"
           >
             View Details
           </Link>
