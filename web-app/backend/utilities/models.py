@@ -13,6 +13,7 @@ from sqlalchemy import (
     PrimaryKeyConstraint,
     String,
     func,
+    Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -314,21 +315,18 @@ class Tools(db.Model, TMC_Data_Model):
 
     id: Mapped[int] = mapped_column(Integer(), primary_key=True)
     name: Mapped[str] = mapped_column(String(length=100), nullable=False)
-    description: Mapped[str] = mapped_column(String(length=255), nullable=False)
+    description: Mapped[str] = mapped_column(Text(), nullable=False)
     category_id: Mapped[int] = mapped_column(
         Integer(), ForeignKey(Tool_Categories.id), nullable=False
     )
-    vendor_id: Mapped[int] = mapped_column(
-        Integer(), ForeignKey(Vendor.id), nullable=False
-    )
     logo_url: Mapped[str] = mapped_column(String(length=255), nullable=False)
-    regular_price: Mapped[float] = mapped_column(Float(), nullable=False)
-    member_price: Mapped[float] = mapped_column(Float(), nullable=False)
-    discount_percentage: Mapped[float] = mapped_column(Float(), nullable=False)
-    is_featured: Mapped[bool] = mapped_column(Boolean(), nullable=False)
-    tier_requirement: Mapped[int] = mapped_column(Integer(), nullable=False)
-    rating: Mapped[float] = mapped_column(Float(), nullable=False)
-    review_count: Mapped[int] = mapped_column(Integer(), nullable=False)
+    regular_price: Mapped[str] = mapped_column(String(), nullable=False)
+    member_price: Mapped[str] = mapped_column(String(), nullable=True)
+    discount_percentage: Mapped[float] = mapped_column(Float(), nullable=True)
+    is_featured: Mapped[bool] = mapped_column(Boolean(), nullable=True)
+    tier_requirement: Mapped[str] = mapped_column(String(), nullable=True)
+    rating: Mapped[float] = mapped_column(Float(), nullable=True)
+    review_count: Mapped[int] = mapped_column(Integer(), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(), nullable=False, default=func.now()
     )
