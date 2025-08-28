@@ -3,7 +3,7 @@ from flask_security import Security, SQLAlchemyUserDatastore
 from utilities.models import Role, User, db
 from utilities.tmc_logger import tmc_logger
 
-api = Flask(__name__)
+api = Flask(__name__, template_folder="assets", static_folder="assets")
 api.config.from_object("config")
 api.logger = tmc_logger
 

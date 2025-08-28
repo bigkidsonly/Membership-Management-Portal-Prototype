@@ -1,5 +1,5 @@
 // src/pages/Dashboard.tsx (Simplified version using hooks)
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MetricsCards } from "../components/Dashboard/MetricsCards";
 import { AffiliatePanel } from "../components/Dashboard/AffiliatePanel";
 import { BenefitsPanel } from "../components/Dashboard/BenefitsPanel";
@@ -20,6 +20,16 @@ export function Dashboard() {
     loading: affiliatesLoading,
     error: affiliatesError,
   } = useAffiliates();
+
+  const [username, setUsername] = useState("friend");
+  useEffect(() => {
+    fetch("/api/users/me")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User Data:", data);
+        setUsername(data.user?.first_name);
+      });
+  }, []);
 
   // Show error state if there's a critical error
   if (metricsError || affiliatesError) {
@@ -65,7 +75,7 @@ export function Dashboard() {
   return (
     <div className="max-w-7xl mx-auto">
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-        Welcome back, TechNetworks Alliance
+        Welcome back, {username}!
       </h1>
       <h2 className="text-sm text-gray-500 -mt-4 mb-6">
         TL-1 - Affiliated Networks Dashboard

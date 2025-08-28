@@ -3,8 +3,14 @@ services:
     build:
       context: .
       dockerfile: dev-ops/Dockerfile
-    volumes:
-      - .:/app
+    env_file:
+      - dev.env
+    ports:
+      - "5000:5000"
+  backend:
+    build:
+      context: .
+      dockerfile: dev-ops/Dockerfile.backend
     env_file:
       - dev.env
     ports:

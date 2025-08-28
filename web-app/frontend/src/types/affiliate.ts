@@ -5,7 +5,7 @@ export interface Affiliate {
   email: string;
   phone: string;
   status: "active" | "pending" | "inactive";
-  joinDate: string;
+  join_date: string;
   notes: string;
   tags: string[];
   avatar: string;
