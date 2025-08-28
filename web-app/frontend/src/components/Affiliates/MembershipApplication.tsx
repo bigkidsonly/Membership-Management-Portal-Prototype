@@ -96,7 +96,8 @@ export function MembershipApplication({
 
       // Default to the current user's national member information
       applicationData.nationalMemberId = userData.national_member.id;
-      applicationData.havenProjectName = userData.national_member.haven_project_name;
+      applicationData.havenProjectName =
+        userData.national_member.haven_project_name;
 
       fetch("/api/organization/add", {
         method: "POST",
@@ -259,7 +260,9 @@ export function MembershipApplication({
                 } shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
               />
               {errors.contactEmail && (
-                <p className="mt-1 text-sm text-red-600">{errors.contactEmail}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.contactEmail}
+                </p>
               )}
             </div>
 
@@ -280,7 +283,6 @@ export function MembershipApplication({
               />
             </div>
           </div>
- 
 
           <div className="mt-6">
             <label
@@ -429,7 +431,7 @@ export function MembershipApplication({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Submit Application
             </button>

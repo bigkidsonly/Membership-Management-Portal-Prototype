@@ -126,7 +126,7 @@ export function DirectoryTable({
               organizations
             </p>
           </div>
-          <div className="mt-3 md:mt-0 flex items-center px-4 py-2 bg-blue-50 border border-blue-100 rounded-lg">
+          <div className="mt-3 md:mt-0 flex items-center px-4 py-2 bg-white border border-blue-100 rounded-lg">
             <Info className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
             <span className="text-sm text-blue-700">
               As an admin, you can edit all organization profiles
@@ -192,7 +192,7 @@ export function DirectoryTable({
               <tr
                 key={org.id}
                 className={`group hover:bg-gray-50 transition-colors ${
-                  canEditOrganization(org.id) ? "bg-blue-50" : ""
+                  canEditOrganization(org.id) ? "bg-white" : ""
                 }`}
               >
                 <td className="px-6 py-5 whitespace-nowrap">
@@ -302,7 +302,7 @@ export function DirectoryTable({
                   {canEditOrganization(org.id) ? (
                     <button
                       onClick={() => onEditOrganization(org)}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                      className="inline-flex items-center px-4 py-2 border border-black text-sm font-medium rounded-lg shadow-sm text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
                     >
                       <Edit className="h-4 w-4 mr-2" />
                       Edit Profile

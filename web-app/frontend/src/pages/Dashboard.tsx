@@ -85,7 +85,6 @@ export function Dashboard() {
       <MetricsCards
         affiliatesCount={metrics.affiliatesCount}
         maxAffiliates={metrics.maxAffiliates}
-        activeProjects={metrics.activeProjects}
         monthlyOrders={metrics.monthlyOrders}
         pendingApprovals={metrics.pendingApprovals}
         loading={metricsLoading}
@@ -102,9 +101,8 @@ export function Dashboard() {
       </div>
 
       {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <div className="grid grid-cols-1 gap-6 mt-6">
         <MarketplaceActivity activities={[]} />
-        <ProjectUpdates />
       </div>
     </div>
   );
