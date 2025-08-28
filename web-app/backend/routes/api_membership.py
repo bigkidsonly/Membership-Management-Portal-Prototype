@@ -53,6 +53,33 @@ def add_user():
     return jsonify({"message": "Success", "status_code": 200})
 
 
+@bp.route("/users/me", methods=["GET"])
+def get_current_user():
+    """
+    Endpoint to get the current user's information.
+    """
+
+    if not current_user.is_authenticated:
+        return jsonify({"error": "User not authenticated", "status_code": 401})
+
+    associated_national_member = (
+        db.session.query(TMC_Organization)
+        .filter(TMC_Organization.id == current_user.organization_id)
+        .first()
+    )
+
+    user_info = {
+        "id": current_user.id,
+        "email": current_user.email,
+        "name": current_user.name,
+        "organization_id": current_user.organization_id,
+        "first_name": current_user.name.split(" ")[0],
+        "national_member": associated_national_member.to_dict(),
+    }
+
+    return jsonify({"user": user_info, "status_code": 200})
+
+
 @bp.route("/users/edit", methods=["POST"])
 def edit_user():
     """
@@ -147,16 +174,17 @@ def add_organization():
 
         # Add the organization record
         org = TMC_Organization(
-            name=payload["name"],
+            name=payload["organizationName"],
             data_owner_id=next_data_owner_id,
-            google_group_name=payload["google_group_name"],
-            haven_project_name=payload["haven_project_name"],
-            organization_type=payload["organization_type"],
-            organization_size=payload.get("organization_size"),
-            join_date=payload["join_date"],
+            google_group_name=payload["googleGroupName"],
+            haven_project_name=payload["havenProjectName"],
+            organization_type=payload["organizationType"],
+            organization_size=payload.get("organizationSize"),
+            location=payload.get("location"),
+            join_date=payload["joinDate"],
             domain=payload.get("domain"),
             website=payload.get("website"),
-            slack_channel=payload.get("slack_channel"),
+            slack_channel=payload.get("slackChannel"),
             logo=payload.get("logo"),
         )
 
@@ -164,10 +192,10 @@ def add_organization():
         db.session.add(org)
         db.session.commit()
 
-        if "national_member_id" in payload.keys():
+        if payload["organizationType"] == "Affiliate":
             national_member = (
                 db.session.query(TMC_Organization)
-                .filter(TMC_Organization.id == payload["national_member_id"])
+                .filter(TMC_Organization.id == payload["nationalMemberId"])
                 .first()
             )
 
@@ -185,8 +213,13 @@ def add_organization():
             db.session.commit()
 
         # Add the data owner record
+        # TODO - Make this sustainable
+        data_owner_code = "".join([x[0].upper() for x in org.name.split(" ")])
+        if org.organization_type == "Affiliate":
+            data_owner_code = f"A_{data_owner_code}"
+
         data_owner = Data_Owners(
-            data_owner_id=org.data_owner_id, data_owner_code=payload["data_owner_code"]
+            data_owner_id=org.data_owner_id, data_owner_code=data_owner_code
         )
 
         tmc_logger.info(f"Adding data owner: {data_owner.data_owner_code}")
@@ -196,9 +229,10 @@ def add_organization():
         # Add the point-of-contact record
         point_of_contact = TMC_Organization_Contacts(
             organization_id=org.id,
-            contact_email=payload["contact_email"],
-            contact_name=payload["contact_name"],
-            contact_phone=payload["contact_phone"],
+            contact_email=payload["contactEmail"],
+            contact_name=payload["contactName"],
+            contact_phone=payload["contactPhone"],
+            contact_title=payload["contactTitle"],
         )
 
         tmc_logger.info(f"Adding point of contact: {point_of_contact.contact_name}")

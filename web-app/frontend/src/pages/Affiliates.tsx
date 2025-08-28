@@ -84,22 +84,6 @@ export function Affiliates() {
     setIsMembershipApplicationOpen(false);
   };
 
-  // Filter affiliates based on search and status filter
-  // const filteredAffiliates = affiliates.filter((affiliate) => {
-  //   const matchesSearch =
-  //     affiliate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     affiliate.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     affiliate.organization
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase()) ||
-  //     affiliate.primaryContact
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase());
-  //   const matchesFilter =
-  //     filterStatus === "all" || affiliate.status === filterStatus;
-  //   return matchesSearch && matchesFilter;
-  // });
-
   // Call the backend to get affiliate names
   const [myAffiliates, setMyAffiliates] = useState([]);
   useEffect(() => {
@@ -107,7 +91,7 @@ export function Affiliates() {
       .then((response) => response.json())
       .then((data) => {
         // Do something with the affiliate names
-        console.log("My Affiliates:", data);
+        console.log("Affiliate data:", data);
         setMyAffiliates(data.affiliates || []); // Extract the affiliates array
       })
       .catch((error) => {

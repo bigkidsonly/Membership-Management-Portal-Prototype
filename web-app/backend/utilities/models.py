@@ -3,7 +3,17 @@ from typing import List
 
 from flask_security import RoleMixin, UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, func
+from sqlalchemy import (
+    Boolean,
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    PrimaryKeyConstraint,
+    String,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 db = SQLAlchemy()
@@ -47,9 +57,13 @@ class TMC_Organization(db.Model, TMC_Data_Model):
 
 class Data_Sharing_Relationship(db.Model, TMC_Data_Model):
     __tablename__ = "data_sharing"
-    __table_args__ = {"schema": "tmc_dev"}
+    __table_args__ = (
+        PrimaryKeyConstraint(
+            "granting_data_owner_id", "receiving_data_owner_id", name="data_share_pk_1"
+        ),
+        {"schema": "tmc_dev"},
+    )
 
-    id: Mapped[int] = mapped_column(Integer(), primary_key=True)
     granting_data_owner_id: Mapped[int] = mapped_column(
         Integer(), db.ForeignKey(TMC_Organization.data_owner_id), nullable=False
     )
@@ -162,9 +176,11 @@ class BigQuery_User(db.Model, TMC_Data_Model):
 
 class Data_Owners(db.Model, TMC_Data_Model):
     __tablename__ = "data_owners"
-    __table_args__ = {"schema": "tmc_dev"}
+    __table_args__ = (
+        PrimaryKeyConstraint("data_owner_id", name="pk_data_owner"),
+        {"schema": "tmc_dev"},
+    )
 
-    id: Mapped[int] = mapped_column(Integer(), primary_key=True)
     data_owner_id: Mapped[int] = mapped_column(
         Integer(),
         ForeignKey(TMC_Organization.data_owner_id),
@@ -219,6 +235,7 @@ class TMC_Organization_Contacts(db.Model, TMC_Data_Model):
         Integer(), db.ForeignKey(TMC_Organization.id), nullable=False
     )
     contact_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    contact_title: Mapped[str] = mapped_column(String(255), nullable=True)
     contact_email: Mapped[str] = mapped_column(String(255), nullable=False)
     contact_phone: Mapped[str] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
