@@ -1,5 +1,18 @@
-import React, { useState, memo } from 'react';
-import { CreditCard, Plus, Check, Edit, Trash2, AlertCircle, Shield, CreditCardIcon, CheckSquare, DollarSign, X, Landmark, Mail, Save } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  CreditCard,
+  Plus,
+  Check,
+  Edit,
+  Trash2,
+  Shield,
+  CreditCardIcon,
+  CheckSquare,
+  X,
+  Landmark,
+  Save,
+} from "lucide-react";
+
 interface PaymentMethod {
   id: string;
   type: string;
@@ -9,201 +22,297 @@ interface PaymentMethod {
   expiryYear: number;
   isPrimary: boolean;
 }
+
 interface PaymentMethodsProps {
   paymentMethods: PaymentMethod[];
   onSetPrimary: (id: string) => void;
 }
+
 export function PaymentMethods({
   paymentMethods,
-  onSetPrimary
+  onSetPrimary,
 }: PaymentMethodsProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [hoverCard, setHoverCard] = useState<string | null>(null);
-  const [paymentType, setPaymentType] = useState<string>('credit_card');
-  const [showPaymentInfo, setShowPaymentInfo] = useState<boolean>(false);
+  const [paymentType, setPaymentType] = useState<string>("credit_card");
+
   const getCardIcon = (brand: string) => {
     switch (brand.toLowerCase()) {
-      case 'visa':
-        return '💳';
-      case 'mastercard':
-        return '💳';
-      case 'amex':
-        return '💳';
+      case "visa":
+      case "mastercard":
+      case "amex":
       default:
-        return '💳';
+        return "💳";
     }
   };
+
   const formatExpiryDate = (month: number, year: number) => {
-    return `${month.toString().padStart(2, '0')}/${year.toString().slice(-2)}`;
+    return `${month.toString().padStart(2, "0")}/${year.toString().slice(-2)}`;
   };
-  const getPaymentMethodIcon = (type: string) => {
-    switch (type) {
-      case 'credit_card':
-        return <CreditCardIcon className="w-5 h-5 text-primary" />;
-      case 'bank_transfer':
-        return <div className="w-5 h-5 text-blue-600" />;
-      case 'check':
-        return <CheckSquare className="w-5 h-5 text-green-600" />;
-      default:
-        return <CreditCardIcon className="w-5 h-5 text-primary" />;
-    }
-  };
-  return <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 transform transition-all duration-300 hover:shadow-xl">
-      <h2 className="text-lg font-bold text-primary flex items-center mb-5 tracking-tight">
-        <div className="bg-primary/10 p-2 rounded-lg mr-3 shadow-sm">
-          <CreditCard className="w-5 h-5 text-primary" />
-        </div>
-        Payment Methods
-      </h2>
-      <div className="mt-5 space-y-4">
-        {paymentMethods.map(method => <div key={method.id} className={`border rounded-lg p-4 transition-all duration-300 ${method.isPrimary ? 'border-primary bg-primary/5 shadow-md' : hoverCard === method.id ? 'border-primary/20 bg-gray-50 shadow-md scale-[1.01]' : 'border-gray-200 hover:border-primary/20 hover:bg-gray-50 hover:shadow-sm'}`} onMouseEnter={() => setHoverCard(method.id)} onMouseLeave={() => setHoverCard(null)}>
-            <div className="flex justify-between">
-              <div className="flex items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 shadow-md ${method.isPrimary ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-600'}`}>
-                  <span className="text-xl">{getCardIcon(method.brand)}</span>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900">
-                    {method.brand} •••• {method.last4}
-                    {method.isPrimary && <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full shadow-sm">
-                        Primary
-                      </span>}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Expires{' '}
-                    {formatExpiryDate(method.expiryMonth, method.expiryYear)}
-                  </p>
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                {!method.isPrimary && <button onClick={() => onSetPrimary(method.id)} className="text-sm text-primary hover:text-primary/80 flex items-center transition-all duration-200 hover:bg-primary/10 px-2 py-1 rounded-md">
-                    <Check className="w-4 h-4 mr-1" />
-                    Make Primary
-                  </button>}
-                <button className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors">
-                  <Edit className="w-4 h-4" />
-                </button>
-                <button className="p-1.5 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            {method.isPrimary && <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500 flex items-center">
-                <Shield className="w-3.5 h-3.5 text-green-500 mr-1.5" />
-                This is your primary payment method for automatic charges
-              </div>}
-          </div>)}
-      </div>
-      {isAddingNew ? <div className="mt-5 border rounded-lg p-5 border-primary/20 bg-primary/5 shadow-lg">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-sm font-semibold text-gray-700">
-              Add Payment Method
-            </h3>
-            <button onClick={() => setIsAddingNew(false)} className="p-1 rounded-full hover:bg-gray-200 text-gray-500">
-              <X className="w-4 h-4" />
-            </button>
+
+  return (
+    <div className="relative bg-[#FEFEFE] p-6 transform rotate-[0.2deg] transition-all duration-300 hover:rotate-[-0.1deg] hover:scale-[1.005]">
+      {/* Hand-drawn border layers */}
+      <div className="absolute inset-0 border-2 border-black transform rotate-[-0.4deg] translate-x-[2px] translate-y-[2px]"></div>
+      <div className="absolute inset-0 border-2 border-black transform rotate-[0.3deg]"></div>
+
+      <div className="relative z-10">
+        <h2 className="text-xl font-extrabold text-black flex items-center mb-5 tracking-tight">
+          <div className="relative bg-[#F8F8F8] p-2 mr-3 transform rotate-[-2deg]">
+            <CreditCard className="w-5 h-5 text-black transform rotate-[1deg]" />
+            <div className="absolute inset-0 border-2 border-black transform rotate-[1.5deg] translate-x-[1px] translate-y-[1px]"></div>
           </div>
-          <div className="mb-5 border-b border-gray-200 pb-4">
-            <div className="text-xs font-medium text-gray-500 mb-2">
-              Select payment type
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className={`border rounded-lg p-3 flex flex-col items-center cursor-pointer transition-all ${paymentType === 'credit_card' ? 'border-primary bg-primary/5 shadow-md' : 'border-gray-200 hover:border-primary/20'}`} onClick={() => setPaymentType('credit_card')}>
-                <CreditCardIcon className={`w-6 h-6 mb-2 ${paymentType === 'credit_card' ? 'text-primary' : 'text-gray-500'}`} />
-                <span className="text-xs font-medium">Credit Card</span>
-              </div>
-              <div className={`border rounded-lg p-3 flex flex-col items-center cursor-pointer transition-all ${paymentType === 'bank_transfer' ? 'border-primary bg-primary/5 shadow-md' : 'border-gray-200 hover:border-primary/20'}`} onClick={() => setPaymentType('bank_transfer')}>
-                <div className={`w-6 h-6 mb-2 ${paymentType === 'bank_transfer' ? 'text-primary' : 'text-gray-500'}`} />
-                <span className="text-xs font-medium">Bank Transfer</span>
-              </div>
-              <div className={`border rounded-lg p-3 flex flex-col items-center cursor-pointer transition-all ${paymentType === 'check' ? 'border-primary bg-primary/5 shadow-md' : 'border-gray-200 hover:border-primary/20'}`} onClick={() => setPaymentType('check')}>
-                <CheckSquare className={`w-6 h-6 mb-2 ${paymentType === 'check' ? 'text-primary' : 'text-gray-500'}`} />
-                <span className="text-xs font-medium">Check</span>
-              </div>
-            </div>
-          </div>
-          {paymentType === 'credit_card' && <div className="space-y-4">
-              <div>
-                <label htmlFor="cardNumber" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Card Number
-                </label>
-                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="expiryDate" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                    Expiry Date
-                  </label>
-                  <input type="text" id="expiryDate" placeholder="MM/YY" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-                </div>
-                <div>
-                  <label htmlFor="cvc" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                    CVC
-                  </label>
-                  <input type="text" id="cvc" placeholder="123" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="nameOnCard" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Name on Card
-                </label>
-                <input type="text" id="nameOnCard" placeholder="John Smith" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-              </div>
-              <div className="flex items-center mt-3">
-                <div className="flex-shrink-0 mr-3">
-                  <img src="https://cdn.pixabay.com/photo/2021/12/06/13/08/stripe-6850391_960_720.png" alt="Stripe" className="h-5 object-contain" />
-                </div>
-                <p className="text-xs text-gray-500">
-                  Secure payment processing by Stripe
-                </p>
-              </div>
-            </div>}
-          {paymentType === 'bank_transfer' && <div className="space-y-4">
-              <div>
-                <label htmlFor="accountName" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Account Holder Name
-                </label>
-                <input type="text" id="accountName" placeholder="John Smith" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-              </div>
-              <div>
-                <label htmlFor="routingNumber" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Routing Number
-                </label>
-                <input type="text" id="routingNumber" placeholder="123456789" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-              </div>
-              <div>
-                <label htmlFor="accountNumber" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Account Number
-                </label>
-                <input type="text" id="accountNumber" placeholder="987654321" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow" />
-              </div>
-              <div>
-                <label htmlFor="accountType" className="block text-xs text-gray-500 mb-1.5 font-medium">
-                  Account Type
-                </label>
-                <select id="accountType" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-primary focus:border-primary shadow-sm transition-shadow duration-200 hover:shadow">
-                  <option value="checking">Checking</option>
-                  <option value="savings">Savings</option>
-                </select>
-              </div>
-            </div>}
-          {paymentType === 'check' && <div className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <Mail className="h-5 w-5 text-blue-500" />
+          <span className="relative transform rotate-[-0.2deg]">
+            Payment Methods
+            <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-[#2E86AB] transform rotate-[0.5deg]"></span>
+          </span>
+        </h2>
+
+        <div className="mt-5 space-y-4">
+          {paymentMethods.map((method, index) => (
+            <div
+              key={method.id}
+              className={`relative border-2 p-4 transition-all duration-300 transform ${
+                method.isPrimary
+                  ? "border-black bg-[#F0F8FF] rotate-[0.3deg]"
+                  : hoverCard === method.id
+                  ? "border-black bg-[#F8F8F8] scale-[1.01] rotate-[-0.2deg]"
+                  : `border-black bg-[#FEFEFE] ${
+                      index % 2 === 0 ? "rotate-[0.2deg]" : "rotate-[-0.2deg]"
+                    } hover:rotate-[0deg] hover:bg-[#F8F8F8]`
+              }`}
+              onMouseEnter={() => setHoverCard(method.id)}
+              onMouseLeave={() => setHoverCard(null)}
+            >
+              {/* Sketchy border effect */}
+              <div className="absolute inset-0 border-2 border-black transform rotate-[-0.5deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+
+              <div className="relative z-10 flex justify-between">
+                <div className="flex items-center">
+                  <div
+                    className={`relative w-10 h-10 flex items-center justify-center mr-3 transform rotate-[${
+                      index * 2 - 3
+                    }deg] ${
+                      method.isPrimary
+                        ? "bg-[#2E86AB] text-white"
+                        : "bg-[#F0F0F0] text-[#6B6B6B]"
+                    }`}
+                  >
+                    <span className="text-xl">{getCardIcon(method.brand)}</span>
+                    <div className="absolute inset-0 border-2 border-black transform rotate-[-2deg] translate-x-[1px] translate-y-[1px]"></div>
                   </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-blue-800">
+                  <div>
+                    <p className="font-extrabold text-black transform rotate-[0.1deg]">
+                      {method.brand} •••• {method.last4}
+                      {method.isPrimary && (
+                        <span className="ml-2 relative text-xs bg-[#2E86AB] text-white px-2 py-0.5 font-extrabold transform rotate-[8deg]">
+                          Primary
+                          <span className="absolute inset-0 border border-black transform rotate-[-8deg] pointer-events-none"></span>
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-sm text-[#6B6B6B] font-medium transform rotate-[-0.1deg]">
+                      Expires{" "}
+                      {formatExpiryDate(method.expiryMonth, method.expiryYear)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  {!method.isPrimary && (
+                    <button
+                      onClick={() => onSetPrimary(method.id)}
+                      className="relative text-sm text-black hover:text-[#2E86AB] flex items-center font-bold px-2 py-1 transform rotate-[-0.3deg] hover:rotate-[0.2deg] transition-all duration-200 hover:bg-[#F0F8FF]"
+                    >
+                      <Check className="w-4 h-4 mr-1 transform rotate-[3deg]" />
+                      Make Primary
+                      <div className="absolute inset-0 border border-black border-dashed transform rotate-[0.5deg] pointer-events-none opacity-0 hover:opacity-100 transition-opacity"></div>
+                    </button>
+                  )}
+                  <button className="relative p-1.5 text-[#6B6B6B] hover:text-black hover:bg-[#F0F0F0] transition-colors transform rotate-[2deg] hover:rotate-[-2deg]">
+                    <Edit className="w-4 h-4" />
+                    <div className="absolute inset-0 border border-black transform rotate-[-3deg] pointer-events-none opacity-0 hover:opacity-100 transition-opacity"></div>
+                  </button>
+                  <button className="relative p-1.5 text-[#6B6B6B] hover:text-[#CC2936] hover:bg-[#FFF0F0] transition-colors transform rotate-[-2deg] hover:rotate-[2deg]">
+                    <Trash2 className="w-4 h-4" />
+                    <div className="absolute inset-0 border border-[#CC2936] transform rotate-[3deg] pointer-events-none opacity-0 hover:opacity-100 transition-opacity"></div>
+                  </button>
+                </div>
+              </div>
+              {method.isPrimary && (
+                <div className="mt-3 pt-3 border-t border-black border-dashed text-xs text-[#6B6B6B] flex items-center transform rotate-[0.1deg]">
+                  <Shield className="w-3.5 h-3.5 text-[#2E86AB] mr-1.5 transform rotate-[5deg]" />
+                  This is your primary payment method for automatic charges
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {isAddingNew ? (
+          <div className="mt-5 relative border-2 border-black p-5 bg-[#F0F8FF] transform rotate-[0.1deg]">
+            <div className="absolute inset-0 border-2 border-black transform rotate-[-0.4deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+
+            <div className="relative z-10">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-extrabold text-black transform rotate-[-0.2deg]">
+                  Add Payment Method
+                </h3>
+                <button
+                  onClick={() => setIsAddingNew(false)}
+                  className="relative p-1 text-[#6B6B6B] hover:text-black transform rotate-[5deg] hover:rotate-[-5deg] transition-all duration-200"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="mb-5 border-b border-black border-dashed pb-4">
+                <div className="text-xs font-extrabold text-[#6B6B6B] mb-2 transform rotate-[-0.1deg]">
+                  Select payment type
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    {
+                      id: "credit_card",
+                      icon: CreditCardIcon,
+                      label: "Credit Card",
+                    },
+                    {
+                      id: "bank_transfer",
+                      icon: Landmark,
+                      label: "Bank Transfer",
+                    },
+                    { id: "check", icon: CheckSquare, label: "Check" },
+                  ].map((type, index) => (
+                    <div
+                      key={type.id}
+                      className={`relative border-2 border-black p-3 flex flex-col items-center cursor-pointer transition-all transform ${
+                        paymentType === type.id
+                          ? "bg-[#F0F8FF] rotate-[0.5deg] scale-105"
+                          : `bg-[#FEFEFE] ${
+                              index % 2 === 0
+                                ? "rotate-[0.2deg]"
+                                : "rotate-[-0.2deg]"
+                            } hover:rotate-[0deg] hover:bg-[#F8F8F8]`
+                      }`}
+                      onClick={() => setPaymentType(type.id)}
+                    >
+                      <div className="absolute inset-0 border-2 border-black transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+                      <type.icon
+                        className={`relative z-10 w-6 h-6 mb-2 transform rotate-[${
+                          index * 3 - 3
+                        }deg] ${
+                          paymentType === type.id
+                            ? "text-[#2E86AB]"
+                            : "text-[#6B6B6B]"
+                        }`}
+                      />
+                      <span className="relative z-10 text-xs font-extrabold">
+                        {type.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {paymentType === "credit_card" && (
+                <div className="space-y-4">
+                  {[
+                    {
+                      id: "cardNumber",
+                      label: "Card Number",
+                      placeholder: "1234 5678 9012 3456",
+                    },
+                    {
+                      id: "expiryDate",
+                      label: "Expiry Date",
+                      placeholder: "MM/YY",
+                      half: true,
+                    },
+                    { id: "cvc", label: "CVC", placeholder: "123", half: true },
+                    {
+                      id: "nameOnCard",
+                      label: "Name on Card",
+                      placeholder: "John Smith",
+                    },
+                  ].map((field, index) => (
+                    <div
+                      key={field.id}
+                      className={field.half ? "w-1/2" : "w-full"}
+                    >
+                      <label className="block text-xs text-[#6B6B6B] mb-1.5 font-extrabold transform rotate-[-0.1deg]">
+                        {field.label}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder={field.placeholder}
+                          className="w-full px-3 py-2 bg-[#FEFEFE] text-black border-2 border-black font-medium focus:outline-none focus:border-[#2E86AB] transform rotate-[0.1deg] focus:rotate-[0deg] transition-all duration-200"
+                        />
+                        <div className="absolute inset-0 border-2 border-black transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex items-center mt-3 transform rotate-[0.1deg]">
+                    <div className="flex-shrink-0 mr-3">
+                      <div className="h-5 bg-[#F0F0F0] px-2 py-1 text-xs font-bold border border-black transform rotate-[-1deg]">
+                        STRIPE
+                      </div>
+                    </div>
+                    <p className="text-xs text-[#6B6B6B] font-medium">
+                      Secure payment processing by Stripe
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {paymentType === "bank_transfer" && (
+                <div className="space-y-4">
+                  {[
+                    {
+                      id: "accountName",
+                      label: "Account Holder Name",
+                      placeholder: "John Smith",
+                    },
+                    {
+                      id: "routingNumber",
+                      label: "Routing Number",
+                      placeholder: "123456789",
+                    },
+                    {
+                      id: "accountNumber",
+                      label: "Account Number",
+                      placeholder: "987654321",
+                    },
+                  ].map((field) => (
+                    <div key={field.id}>
+                      <label className="block text-xs text-[#6B6B6B] mb-1.5 font-extrabold transform rotate-[-0.1deg]">
+                        {field.label}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder={field.placeholder}
+                          className="w-full px-3 py-2 bg-[#FEFEFE] text-black border-2 border-black font-medium focus:outline-none focus:border-[#2E86AB] transform rotate-[0.1deg] focus:rotate-[0deg] transition-all duration-200"
+                        />
+                        <div className="absolute inset-0 border-2 border-black transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {paymentType === "check" && (
+                <div className="relative bg-[#F0F8FF] p-4 border-2 border-[#2E86AB] border-dashed transform rotate-[0.1deg]">
+                  <div className="absolute inset-0 border-2 border-[#2E86AB] border-dashed transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+                  <div className="relative z-10">
+                    <h3 className="text-sm font-extrabold text-[#2E86AB] mb-2 transform rotate-[-0.1deg]">
                       Check Payment Instructions
                     </h3>
-                    <div className="mt-2 text-sm text-blue-700">
+                    <div className="text-sm text-black font-medium space-y-2">
                       <p>Please make checks payable to:</p>
-                      <p className="font-medium mt-1">
-                        The Movement Cooperative
-                      </p>
+                      <p className="font-extrabold">The Movement Cooperative</p>
                       <p className="mt-3">Mail checks to:</p>
-                      <address className="mt-1 not-italic">
+                      <address className="mt-1 not-italic font-medium">
                         The Movement Cooperative
                         <br />
                         Attn: Accounts Receivable
@@ -212,107 +321,89 @@ export function PaymentMethods({
                         <br />
                         New York, NY 10001
                       </address>
-                    </div>
-                    <div className="mt-3 text-xs text-blue-600 border-t border-blue-200 pt-2">
-                      <p>
-                        Please include your account number and invoice number(s)
-                        on the memo line.
-                      </p>
+                      <div className="mt-3 text-xs text-[#6B6B6B] border-t border-[#2E86AB] border-dashed pt-2">
+                        <p className="font-bold">
+                          Please include your account number and invoice
+                          number(s) on the memo line.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-5">
+                <button
+                  onClick={() => setIsAddingNew(false)}
+                  className="relative px-4 py-2 border-2 border-black text-black text-sm font-extrabold transform rotate-[-0.3deg] hover:rotate-[0.2deg] transition-all duration-200 hover:bg-[#F0F0F0]"
+                >
+                  Cancel
+                  <span className="absolute inset-0 border-2 border-black transform rotate-[0.5deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></span>
+                </button>
+                <button className="relative px-4 py-2 bg-black text-white text-sm font-extrabold transform rotate-[0.3deg] hover:rotate-[-0.2deg] transition-all duration-200 hover:scale-105">
+                  <Save className="w-4 h-4 mr-2 inline" />
+                  Add Payment Method
+                  <span className="absolute inset-0 border-2 border-black transform rotate-[-0.5deg] pointer-events-none"></span>
+                </button>
               </div>
-            </div>}
-          <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-5">
-            <button onClick={() => setIsAddingNew(false)} className="px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow">
-              Cancel
-            </button>
-            <button className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-              Add Payment Method
-            </button>
+
+              <div className="mt-4 flex items-start bg-[#F0F8FF] p-3 border border-[#2E86AB] border-dashed transform rotate-[0.05deg]">
+                <Shield className="w-4 h-4 text-[#2E86AB] mt-0.5 mr-2 flex-shrink-0 transform rotate-[3deg]" />
+                <p className="text-xs text-[#2E86AB] font-bold">
+                  Your payment information is encrypted and securely stored. We
+                  use industry-standard security measures to protect your data.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="mt-4 flex items-start bg-blue-50 p-3 rounded-md border border-blue-100">
-            <Shield className="w-4 h-4 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
-            <p className="text-xs text-blue-600">
-              Your payment information is encrypted and securely stored. We use
-              industry-standard security measures to protect your data.
-            </p>
+        ) : (
+          <button
+            onClick={() => setIsAddingNew(true)}
+            className="mt-5 w-full relative flex items-center justify-center px-4 py-3 border-2 border-black text-sm font-extrabold text-black hover:bg-[#F0F8FF] transition-all duration-200 hover:scale-[1.02] transform rotate-[-0.2deg] hover:rotate-[0.1deg]"
+          >
+            <Plus className="w-4 h-4 mr-2 transform rotate-[5deg]" />
+            Add Payment Method
+            <span className="absolute inset-0 border-2 border-black transform rotate-[0.4deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></span>
+          </button>
+        )}
+
+        <div className="mt-6 pt-5 border-t border-black border-dashed">
+          <h3 className="text-sm font-extrabold text-black mb-3 flex items-center transform rotate-[-0.1deg]">
+            <span>Auto-pay Preferences</span>
+            <div className="relative ml-1.5">
+              <div className="w-4 h-4 text-[#6B6B6B] transform rotate-[8deg] border border-black rounded-full flex items-center justify-center text-xs">
+                ?
+              </div>
+            </div>
+          </h3>
+          <div className="relative flex items-center bg-[#F8F8F8] p-4 border-2 border-black hover:bg-[#F0F8FF] transition-all duration-200 transform rotate-[0.1deg] hover:rotate-[-0.05deg]">
+            <div className="absolute inset-0 border-2 border-black transform rotate-[-0.3deg] translate-x-[1px] translate-y-[1px] pointer-events-none"></div>
+            <div className="relative z-10 flex items-center">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="auto-pay"
+                  className="sr-only"
+                  defaultChecked
+                />
+                <label
+                  htmlFor="auto-pay"
+                  className="block w-4 h-4 border-2 border-black bg-[#2E86AB] transform rotate-[3deg] cursor-pointer"
+                >
+                  <div className="absolute inset-0 border-2 border-black transform rotate-[-5deg] translate-x-[1px] translate-y-[1px] bg-white"></div>
+                  <Check className="relative z-10 w-3 h-3 text-white m-0.5" />
+                </label>
+              </div>
+              <label
+                htmlFor="auto-pay"
+                className="ml-3 block text-sm text-black font-extrabold cursor-pointer transform rotate-[-0.05deg]"
+              >
+                Use primary payment method for automatic renewals
+              </label>
+            </div>
           </div>
-        </div> : <button onClick={() => setIsAddingNew(true)} className="mt-5 w-full flex items-center justify-center px-4 py-3 border border-gray-200 rounded-lg text-sm font-medium text-primary hover:bg-primary/5 transition-all duration-200 hover:border-primary/20 shadow-sm hover:shadow-md hover:-translate-y-0.5 transform">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Payment Method
-        </button>}
-      <div className="mt-6 pt-5 border-t border-gray-200">
-        <button onClick={() => setShowPaymentInfo(!showPaymentInfo)} className="text-sm font-semibold text-primary flex items-center hover:underline mb-3">
-          {showPaymentInfo ? 'Hide payment information' : 'View payment information'}
-          <ChevronDown className={`ml-1 w-4 h-4 transform transition-transform ${showPaymentInfo ? 'rotate-180' : ''}`} />
-        </button>
-        {showPaymentInfo && <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 space-y-4 shadow-inner">
-            <div>
-              <h4 className="text-xs font-semibold text-gray-700 mb-2 flex items-center">
-                <CreditCardIcon className="w-4 h-4 text-primary mr-1.5" />
-                Credit Card Payments
-              </h4>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                We accept Visa, Mastercard, and American Express. Credit card
-                payments are processed securely through Stripe.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-gray-700 mb-2 flex items-center">
-                <div className="w-4 h-4 text-primary mr-1.5" />
-                Bank Transfers (ACH)
-              </h4>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Direct bank transfers are available for US-based accounts.
-                Payments typically process within 3-5 business days.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-gray-700 mb-2 flex items-center">
-                <Landmark className="w-4 h-4 text-primary mr-1.5" />
-                Wire Transfers
-              </h4>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                For international payments or large transfers, please contact
-                our finance team at ar@movementcooperative.org for wire
-                instructions.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold text-gray-700 mb-2 flex items-center">
-                <CheckSquare className="w-4 h-4 text-primary mr-1.5" />
-                Check Payments
-              </h4>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Make checks payable to "The Movement Cooperative" and mail to
-                our office address. Please include your account number and
-                invoice number(s).
-              </p>
-            </div>
-          </div>}
-      </div>
-      <div className="mt-6 border-t pt-5">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
-          <span>Auto-pay Preferences</span>
-          <AlertCircle className="h-4 w-4 text-gray-400 ml-1.5 cursor-help group relative">
-            <div className="hidden group-hover:block absolute left-0 bottom-full mb-2 p-2 bg-gray-800 text-white text-xs rounded shadow-lg z-10 w-48">
-              We'll use your primary payment method for automatic renewals
-              <div className="absolute left-2 bottom-[-6px] transform rotate-45 w-3 h-3 bg-gray-800"></div>
-            </div>
-          </AlertCircle>
-        </h3>
-        <div className="flex items-center bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-primary/20 hover:bg-primary/5 transition-all duration-200 shadow-sm hover:shadow">
-          <input type="checkbox" id="auto-pay" className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary" defaultChecked />
-          <label htmlFor="auto-pay" className="ml-2 block text-sm text-gray-700">
-            Use primary payment method for automatic renewals
-          </label>
         </div>
       </div>
-    </div>;
-}
-function ChevronDown(props) {
-  return <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m6 9 6 6 6-6" />
-    </svg>;
+    </div>
+  );
 }
