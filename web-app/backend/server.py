@@ -11,12 +11,13 @@ db.init_app(api)
 
 ### Register routes
 
-from routes import api_membership_bp, api_tools_bp, auth_bp, core_bp
+from routes import api_membership_bp, api_tools_bp, api_users_bp, auth_bp, core_bp
 
 api.register_blueprint(core_bp)
 api.register_blueprint(api_membership_bp)
 api.register_blueprint(api_tools_bp)
 api.register_blueprint(auth_bp)
+api.register_blueprint(api_users_bp)
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

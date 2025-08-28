@@ -54,13 +54,25 @@ def list_users():
         return jsonify({"error": "User not authenticated", "status_code": 401})
 
     users = (
-        db.session.query(User, TMC_Organization.name.label("organization_name"))
+        db.session.query(
+            User,
+            TMC_Organization.name.label("organization_name"),
+        )
         .filter(User.organization_id.in_(current_user.accessible_organizations))
         .join(TMC_Organization, TMC_Organization.id == User.organization_id)
         .all()
     )
 
-    return jsonify({"users": [user.to_dict() for user in users], "status_code": 200})
+    # Each item in users is a tuple: (User, organization_name)
+    users_serialized = [
+        {
+            **user.to_dict(),  # Assumes User model has a to_dict() method
+            "organization_name": organization_name,
+        }
+        for user, organization_name in users
+    ]
+
+    return jsonify({"users": users_serialized, "status_code": 200})
 
 
 @bp.route("/me")

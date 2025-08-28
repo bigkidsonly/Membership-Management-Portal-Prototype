@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { UserTable } from ".././components/user-management/UserTable";
 import { ApplicationForm } from ".././components/user-management/ApplicationForm";
-import { Search, Plus, Download, Filter, RefreshCw } from "lucide-react";
+import { Plus, Download, RefreshCw } from "lucide-react";
 export function UserManagement() {
-  const [activeTab, setActiveTab] = useState("new-users");
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+
   const handleOpenForm = () => {
     setIsFormOpen(true);
   };
@@ -19,6 +17,7 @@ export function UserManagement() {
       const response = await fetch("/api/users/list");
       const data = await response.json();
       if (response.ok) {
+        console.log(data);
         setUsers(data.users);
       }
     };
@@ -29,7 +28,7 @@ export function UserManagement() {
     <div className="max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">
-          User Management
+          BigQuery User Management
         </h1>
         <div className="flex items-center mt-4 md:mt-0 space-x-3">
           <button
@@ -55,7 +54,7 @@ export function UserManagement() {
               <th className="px-4 py-2 text-left">Organization Name</th>
               <th className="px-4 py-2 text-left">User Name</th>
               <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Active</th>
+              <th className="px-4 py-2 text-left">BigQuery Access</th>
             </tr>
           </thead>
           <tbody>
@@ -65,12 +64,12 @@ export function UserManagement() {
                   <td className="px-4 py-2">{user.organization_name}</td>
                   <td className="px-4 py-2">{user.name}</td>
                   <td className="px-4 py-2">{user.email}</td>
-                  <td className="px-4 py-2">{user.is_active ? "✅" : ""}</td>
+                  <td className="px-4 py-2">{user.active ? "✅" : ""}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={3} className="px-4 py-2 text-center text-gray-400">
+                <td colSpan={4} className="px-4 py-2 text-center text-gray-400">
                   No users found.
                 </td>
               </tr>
