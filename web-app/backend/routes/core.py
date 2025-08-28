@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask_security import login_required, current_user
+from flask_security import current_user, login_required
 
 bp = Blueprint("core", __name__)
 

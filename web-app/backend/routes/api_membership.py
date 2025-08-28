@@ -1,5 +1,4 @@
 import traceback
-from uuid import uuid4
 
 from flask import Blueprint, jsonify, request
 from flask_security import current_user
@@ -10,143 +9,11 @@ from utilities.models import (
     TMC_Organization,
     TMC_Organization_Contacts,
     TMC_Organization_Tags,
-    User,
     db,
 )
 from utilities.tmc_logger import tmc_logger
 
 bp = Blueprint("api", __name__, url_prefix="/api")
-
-
-@bp.route("/users/add", methods=["POST"])
-def add_user():
-    """
-    Endpoint to add a new user to the TMC web app
-    """
-
-    # NOTE - This is a POST request coming in from
-    # the React app
-    payload = request.get_json()
-
-    try:
-        # Create a new User record
-        new_user = User(
-            organization_id=payload["organization_id"],
-            email=payload["email"],
-            name=payload["name"],
-            fs_uniquifier=uuid4().hex,
-        )
-
-        tmc_logger.info(f"Adding user: {new_user.email}")
-
-        # Add it to PG
-        db.session.add(new_user)
-        db.session.commit()
-
-    except Exception as e:
-        traceback.print_exc()
-        tmc_logger.error(f"Error adding user: {e}")
-        db.session.rollback()
-
-        return jsonify({"error": str(e), "status_code": 400})
-
-    return jsonify({"message": "Success", "status_code": 200})
-
-
-@bp.route("/users/me", methods=["GET"])
-def get_current_user():
-    """
-    Endpoint to get the current user's information.
-    """
-
-    if not current_user.is_authenticated:
-        return jsonify({"error": "User not authenticated", "status_code": 401})
-
-    associated_national_member = (
-        db.session.query(TMC_Organization)
-        .filter(TMC_Organization.id == current_user.organization_id)
-        .first()
-    )
-
-    user_info = {
-        "id": current_user.id,
-        "email": current_user.email,
-        "name": current_user.name,
-        "organization_id": current_user.organization_id,
-        "first_name": current_user.name.split(" ")[0],
-        "national_member": associated_national_member.to_dict(),
-    }
-
-    return jsonify({"user": user_info, "status_code": 200})
-
-
-@bp.route("/users/edit", methods=["POST"])
-def edit_user():
-    """
-    Endpoint to edit an existing user in the TMC web app
-    """
-
-    # NOTE - this is a POST request coming in
-    # from the React app
-    payload = request.get_json()
-
-    try:
-        # Get the existing user record
-        user = User.query.filter_by(id=payload["id"]).first()
-        if not user:
-            return jsonify({"error": "User not found", "status_code": 404})
-
-        # Loop through the keys in the request
-        # and update the User object where applicable
-        for key in payload.keys():
-            if hasattr(user, key):
-                setattr(user, key, payload[key])
-            else:
-                tmc_logger.warning(f"User has no attribute {key}, skipping update...")
-
-        tmc_logger.info(f"Finished editing user: {user.email}")
-        db.session.commit()
-
-    except Exception as e:
-        traceback.print_exc()
-        tmc_logger.error(f"Error editing user: {e}")
-        db.session.rollback()
-
-        return jsonify({"error": str(e), "status_code": 400})
-
-    return jsonify({"message": "Success", "status_code": 200})
-
-
-@bp.route("/users/deactivate", methods=["POST"])
-def deactivate_user():
-    """
-    Endpoint to deactivate a user in the TMC web app.
-
-    NOTE - we soft delete records only, this endpoint
-    will update the `deactivated_at` field in the User record
-    """
-
-    payload = request.get_json()
-
-    try:
-        # Get the existing user record
-        user = User.query.filter_by(id=payload["id"]).first()
-        if not user:
-            return jsonify({"error": "User not found", "status_code": 404})
-
-        # Update the deactivated_at field
-        user.deactivated_at = func.now()
-        user.active = False
-        db.session.commit()
-
-    except Exception as e:
-        traceback.print_exc()
-        tmc_logger.error(f"Error deactivating user: {e}")
-        db.session.rollback()
-
-        return jsonify({"error": str(e), "status_code": 400})
-
-    return jsonify({"message": "Success", "status_code": 200})
 
 
 @bp.route("/organization/add", methods=["POST"])
