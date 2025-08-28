@@ -44,7 +44,7 @@ export function Header() {
             <div className="flex-shrink-0 flex items-center">
               <img
                 className="h-10 w-auto"
-                src="https://uploadthingy.s3.us-west-1.amazonaws.com/3aBa5PGbG9Vrd8GLfpVgtE/TMC_Primary_Logo_1000x400_Web_Full_Color_Blue__Vivid_Orange_Transparent.png"
+                src="https://can2-prod.s3.amazonaws.com/uploads/data/001/034/218/original/tmc_icon_500x500_white_black_transparent.png"
                 alt="The Movement Cooperative"
               />
             </div>

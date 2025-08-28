@@ -112,20 +112,10 @@ export function Affiliates() {
         <div className="flex space-x-3">
           <button
             onClick={() => setIsMembershipApplicationOpen(true)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg flex items-center hover:bg-green-700"
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            Apply for New Affiliate
-          </button>
-          <button
-            onClick={() => {
-              setCurrentAffiliate(null);
-              setIsFormOpen(true);
-            }}
             className="px-4 py-2 bg-primary text-white rounded-lg flex items-center"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add Affiliate
+            Apply for New Affiliate
           </button>
         </div>
       </div>
