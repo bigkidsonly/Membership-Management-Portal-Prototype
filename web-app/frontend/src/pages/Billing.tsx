@@ -405,7 +405,11 @@ export function Billing() {
       {/* Payment Modal */}
       {showPaymentModal && selectedInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 mx-4">
+          <div className="relative bg-[#FDFDF8] max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 mx-4 transform rotate-[0.2deg]
+            before:content-[''] before:absolute before:inset-0 before:border-2 before:border-black before:rounded-md
+            before:transform before:rotate-[-0.3deg] before:pointer-events-none before:z-[-1]
+            after:content-[''] after:absolute after:inset-0 after:border-2 after:border-black after:rounded-md
+            after:transform after:rotate-[0.1deg] after:translate-x-[1px] after:translate-y-[1px] after:pointer-events-none after:z-[-1]">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-gray-900">Pay Invoice</h3>
               <button
