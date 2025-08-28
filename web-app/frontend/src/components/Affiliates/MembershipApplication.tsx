@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 interface MembershipApplicationProps {
@@ -7,17 +7,24 @@ interface MembershipApplicationProps {
 }
 
 export function MembershipApplication({
-  onSubmit,
   onCancel,
 }: MembershipApplicationProps) {
   const [formData, setFormData] = useState({
     organizationName: "",
+    organizationType: "Affiliate",
+    organizationSize: "",
+    nationalMemberId: "",
+    location: "",
+    googleGroupName: "",
+    havenProjectName: "",
+    domain: "",
+    website: "",
+    slackChannel: "",
+    logo: "",
     contactName: "",
     contactTitle: "",
-    email: "",
-    phone: "",
-    website: "",
-    organizationType: "nonprofit",
+    contactEmail: "",
+    contactPhone: "",
     missionStatement: "",
     reasonForJoining: "",
     relevantExperience: "",
@@ -25,6 +32,17 @@ export function MembershipApplication({
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showNotification, setShowNotification] = useState(false);
+
+  const [userData, setUserData] = useState<any>(null);
+  useEffect(() => {
+    fetch("/api/users/me")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User Data:", data);
+        setUserData(data.user);
+      });
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -56,11 +74,6 @@ export function MembershipApplication({
       newErrors.organizationName = "Organization name is required";
     if (!formData.contactName.trim())
       newErrors.contactName = "Contact name is required";
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
     if (!formData.missionStatement.trim())
       newErrors.missionStatement = "Mission statement is required";
     if (!formData.reasonForJoining.trim())
@@ -75,12 +88,47 @@ export function MembershipApplication({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit({
+      const applicationData = {
         ...formData,
-        submissionDate: new Date().toISOString(),
+        joinDate: new Date().toISOString(),
         status: "pending",
-      });
+      };
+
+      // Default to the current user's national member information
+      applicationData.nationalMemberId = userData.national_member.id;
+      applicationData.havenProjectName = userData.national_member.haven_project_name;
+
+      fetch("/api/organization/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(applicationData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          setShowNotification(true);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     }
+
+    return (
+      <>
+        {showNotification && (
+          <div className="fixed top-0 right-0 m-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            Application submitted successfully!
+          </div>
+        )}
+      </>
+    );
   };
 
   return (
@@ -136,21 +184,18 @@ export function MembershipApplication({
                 htmlFor="organizationType"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Organization Type
+                Organization Size
               </label>
               <select
-                id="organizationType"
-                name="organizationType"
-                value={formData.organizationType}
+                id="organizationSize"
+                name="organizationSize"
+                value={formData.organizationSize}
                 onChange={handleChange}
                 className="block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               >
-                <option value="nonprofit">Non-profit Organization</option>
-                <option value="community">Community Group</option>
-                <option value="educational">Educational Institution</option>
-                <option value="government">Government Agency</option>
-                <option value="cooperative">Cooperative</option>
-                <option value="other">Other</option>
+                <option value="small">Small (1-15 employees)</option>
+                <option value="medium">Medium (16-30 employees)</option>
+                <option value="large">Large (30+ employees)</option>
               </select>
             </div>
 
@@ -207,14 +252,14 @@ export function MembershipApplication({
                 type="email"
                 id="email"
                 name="email"
-                value={formData.email}
+                value={formData.contactEmail}
                 onChange={handleChange}
                 className={`block w-full rounded-md border ${
-                  errors.email ? "border-red-300" : "border-gray-300"
+                  errors.contactEmail ? "border-red-300" : "border-gray-300"
                 } shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm`}
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              {errors.contactEmail && (
+                <p className="mt-1 text-sm text-red-600">{errors.contactEmail}</p>
               )}
             </div>
 
@@ -229,12 +274,13 @@ export function MembershipApplication({
                 type="text"
                 id="phone"
                 name="phone"
-                value={formData.phone}
+                value={formData.contactPhone}
                 onChange={handleChange}
                 className="block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               />
             </div>
           </div>
+ 
 
           <div className="mt-6">
             <label
@@ -251,6 +297,24 @@ export function MembershipApplication({
               onChange={handleChange}
               className="block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               placeholder="https://"
+            />
+          </div>
+
+          <div className="mt-6">
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+              placeholder="City, State"
             />
           </div>
 
