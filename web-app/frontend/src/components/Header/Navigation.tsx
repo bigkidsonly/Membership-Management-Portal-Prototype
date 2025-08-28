@@ -27,7 +27,7 @@ export function Navigation({
       current: pathname.startsWith("/marketplace"),
     },
     {
-      name: "User Management",
+      name: "BigQuery User Management",
       href: "/user-management",
       current: pathname === "/user-management",
     },

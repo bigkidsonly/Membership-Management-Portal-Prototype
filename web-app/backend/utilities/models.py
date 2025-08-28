@@ -12,8 +12,8 @@ from sqlalchemy import (
     Integer,
     PrimaryKeyConstraint,
     String,
-    func,
     Text,
+    func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -89,7 +89,7 @@ class Role(db.Model, TMC_Data_Model, RoleMixin):
     description: Mapped[str] = mapped_column(String(255))
 
 
-class User(db.Model, TMC_Data_Model, UserMixin):
+class User(db.Model, UserMixin, TMC_Data_Model):
     __tablename__ = "user"
     __table_args__ = {"schema": "tmc_dev"}
 
