@@ -21,7 +21,7 @@ export function UserManagement() {
         <div className="flex items-center mt-4 md:mt-0 space-x-3">
           <button
             onClick={handleOpenForm}
-            className="flex items-center px-6 py-3 bg-green-500 text-white font-medium rounded-full hover:bg-green-600 transition-colors duration-200"
+            className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2"
           >
             <Plus className="h-4 w-4 mr-2" />
             Apply for New User

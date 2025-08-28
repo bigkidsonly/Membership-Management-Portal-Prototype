@@ -158,8 +158,8 @@ From connection through collaboration, Tableau is the most powerful, secure, and
         <ArrowLeft className="h-4 w-4 mr-1" />
         Back to Marketplace
       </Link>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-        <div className="p-6 border-b border-gray-200">
+      <div className="bg-primary rounded-xl shadow-sm overflow-hidden mb-8">
+        <div className="p-6 border-b border-black">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="flex items-center mb-4 md:mb-0">
               <img
@@ -214,7 +214,7 @@ From connection through collaboration, Tableau is the most powerful, secure, and
               </span>
               <Link
                 to={`/marketplace/purchase/${tool.id}`}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-black text-white rounded-lg font-medium transition-colors"
               >
                 Request Purchase
               </Link>
@@ -264,19 +264,6 @@ From connection through collaboration, Tableau is the most powerful, secure, and
                   </li>
                 ))}
               </ul>
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Screenshots
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {tool.screenshots.map((screenshot, index) => (
-                  <img
-                    key={index}
-                    src={screenshot}
-                    alt={`${tool.name} screenshot ${index + 1}`}
-                    className="rounded-lg shadow-sm w-full h-auto"
-                  />
-                ))}
-              </div>
             </div>
           )}
           {activeTab === "pricing" && (

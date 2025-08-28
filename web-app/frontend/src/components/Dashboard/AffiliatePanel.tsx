@@ -11,9 +11,12 @@ export function AffiliatePanel() {
         </h3>
       </div>
       <div className="px-6 py-4">
-        <button className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none">
+        <button
+          onClick={() => setIsMembershipApplicationOpen(true)}
+          className="px-4 py-2 bg-black text-white rounded-lg flex items-center"
+        >
           <Plus className="h-4 w-4 mr-2" />
-          Add New Affiliate
+          Apply for New Affiliate
         </button>
         <div className="mt-6">
           <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -59,8 +62,8 @@ export function AffiliatePanel() {
         </div>
         <div className="mt-6 text-center">
           <a
-            href="#"
-            className="text-sm font-medium text-primary hover:text-primary/80"
+            href="/affiliates"
+            className="text-sm font-medium text-primary hover:text-primary/80 border border-black px-3 py-1 rounded"
           >
             View All Affiliates
           </a>
