@@ -1,13 +1,19 @@
-FROM node:18-bullseye AS build
+FROM node:20-bullseye AS build
 
 WORKDIR /app/web-app/frontend
 
 COPY ./web-app/frontend/package.json .
-COPY ./web-app/frontend/package-lock.json .
 
-RUN npm install
+# Clear npm cache and install dependencies without lock file
+RUN npm cache clean --force
+
+# Install dependencies fresh without package-lock to avoid platform issues
+RUN npm install --no-package-lock --no-optional=false
 
 COPY ./web-app/frontend .
+
+# Try to install the missing rollup binary explicitly
+RUN npm install @rollup/rollup-linux-x64-gnu --save-optional || echo "Fallback binary not available"
 
 RUN npm run build
 
